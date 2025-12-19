@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title>Circular Eagle | World Intelligence & Global Breaking News</title>
+    <title>Circular Eagle News | World Intelligence & Global Breaking News</title>
     
     <!-- External Assets -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;500;600;700;800;900&family=Oswald:wght@300;400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;500;600;700;800;900&family=Oswald:wght@300;400;500;600;700&display=swap');
 
         :root {
             --brand-navy: #051024;
@@ -30,11 +30,19 @@
         .serif-headline { font-family: 'Playfair Display', serif; }
         .classic-body { font-family: 'Libre Baskerville', serif; }
         .label-font { font-family: 'Oswald', sans-serif; letter-spacing: 0.05em; }
+        .logo-font { font-family: 'Oswald', sans-serif; letter-spacing: -0.02em; text-transform: uppercase; font-weight: 700; }
 
-        /* Mobile specific fixes */
+        /* Mobile specific fixes for the longer "NEWS" title */
         @media (max-width: 768px) {
-            .mobile-header-text { font-size: 1.75rem !important; }
-            .billboard-height { height: 450px !important; }
+            .mobile-header-text { 
+                font-size: 1.5rem !important; 
+                white-space: nowrap;
+                letter-spacing: -0.01em;
+            }
+            .header-content {
+                gap: 0.25rem !important;
+            }
+            .header-tagline { font-size: 7px !important; }
         }
 
         .billboard-gradient {
@@ -67,7 +75,6 @@
             backdrop-filter: blur(8px);
         }
 
-        /* Improved Marquee for Mobile */
         .marquee-container {
             width: 100%;
             overflow: hidden;
@@ -82,6 +89,9 @@
             0% { transform: translate(0, 0); }
             100% { transform: translate(-100%, 0); }
         }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body class="antialiased">
@@ -90,7 +100,7 @@
     <div id="mobile-overlay" class="fixed inset-0 bg-black/70 z-[60] hidden transition-opacity duration-300"></div>
     <nav id="mobile-menu" class="fixed top-0 left-0 h-full w-[85%] max-w-sm bg-[#051024] text-white z-[70] p-6 shadow-2xl overflow-y-auto">
         <div class="flex justify-between items-center mb-10">
-            <h2 class="label-font font-bold text-xl text-brand-gold italic">CE SECTIONS</h2>
+            <h2 class="label-font font-bold text-lg text-brand-gold italic">CEN SECTIONS</h2>
             <button id="close-menu" class="text-2xl p-2 w-10 h-10 flex items-center justify-center bg-white/10 rounded-full"><i class="fas fa-times"></i></button>
         </div>
         <ul class="space-y-4 label-font text-lg tracking-wide">
@@ -118,20 +128,20 @@
             <span class="breaking-tag px-2 py-0.5 text-[9px] font-black label-font uppercase mr-3 shrink-0 rounded-sm">Breaking</span>
             <div class="marquee-container text-[11px] label-font tracking-wide">
                 <div class="marquee-content">
-                    <a href="#" class="hover:text-brand-gold">Global Markets React to Sudden Central Bank Interest Rate Hike — UN Security Council Convenes Over Arctic Territorial Dispute — Silicon Valley bracing for "The Great Regulation" as EU passes AI Act.</a>
+                    <a href="#" class="hover:text-brand-gold uppercase">Circular Eagle News: Global Markets React to Sudden Central Bank Interest Rate Hike — UN Security Council Convenes Over Arctic Territorial Dispute — Silicon Valley bracing for "The Great Regulation".</a>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 2. MAIN HEADER (Responsive Redesign) -->
+    <!-- 2. MAIN HEADER -->
     <header class="sticky-header border-b premium-border sticky top-0 z-50">
         <div class="container mx-auto px-4 py-3 md:py-5">
-            <div class="flex items-center justify-between relative">
+            <div class="flex items-center justify-between header-content relative">
                 
-                <!-- Left: Burger (Mobile Friendly Size) -->
+                <!-- Left: Burger -->
                 <div class="flex-1 flex items-center">
-                    <button id="burger-btn" class="w-10 h-10 flex items-center justify-center text-2xl hover:text-brand-gold transition-all" aria-label="Menu">
+                    <button id="burger-btn" class="w-10 h-10 flex items-center justify-center text-xl md:text-2xl hover:text-brand-gold transition-all" aria-label="Menu">
                         <i class="fas fa-bars"></i>
                     </button>
                     <!-- Desktop Nav -->
@@ -143,22 +153,22 @@
                     </nav>
                 </div>
 
-                <!-- Center: Logo (Scales for Mobile) -->
-                <div class="flex-shrink-0 text-center px-4">
-                    <a href="/" class="group">
-                        <h1 class="serif-headline mobile-header-text text-2xl md:text-5xl font-black tracking-tighter leading-none italic text-brand-navy group-hover:text-black transition-colors">
+                <!-- Center: Logo -->
+                <div class="flex-shrink-0 text-center px-2">
+                    <a href="/" class="group block">
+                        <h1 class="logo-font mobile-header-text text-2xl md:text-4xl lg:text-5xl text-brand-navy group-hover:text-black transition-colors">
                             CIRCULAR EAGLE NEWS
                         </h1>
-                        <p class="label-font text-[7px] md:text-[9px] tracking-[.3em] mt-0.5 text-brand-gold font-bold uppercase">Intelligence For A Multi-Polar Era</p>
+                        <p class="label-font header-tagline text-[6px] md:text-[8px] tracking-[.3em] mt-0.5 text-brand-gold font-bold uppercase">Intelligence For A Multi-Polar Era</p>
                     </a>
                 </div>
 
                 <!-- Right: Buttons -->
-                <div class="flex-1 flex justify-end items-center gap-3">
+                <div class="flex-1 flex justify-end items-center gap-2 md:gap-3">
                     <button class="hidden md:flex items-center gap-2 label-font text-[10px] font-bold hover:text-brand-gold pr-4">
                         <i class="fas fa-search"></i>
                     </button>
-                    <button class="bg-[#8B0000] text-white px-3 md:px-6 py-1.5 md:py-2 text-[9px] md:text-[10px] font-bold label-font hover:bg-black transition-all shadow-md rounded-sm">JOIN</button>
+                    <button class="bg-[#8B0000] text-white px-2.5 md:px-6 py-1.5 md:py-2 text-[8px] md:text-[10px] font-bold label-font hover:bg-black transition-all shadow-md rounded-sm">JOIN</button>
                 </div>
             </div>
         </div>
@@ -166,10 +176,9 @@
 
     <main class="container mx-auto px-4 py-4 md:py-8">
         
-        <!-- 3. BILLBOARD HERO SECTION (Billboard Look) -->
+        <!-- 3. BILLBOARD HERO SECTION -->
         <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-12">
             
-            <!-- Left: Major Headline -->
             <div class="lg:col-span-8 group relative overflow-hidden rounded-md shadow-xl bg-black h-[400px] md:h-[500px] lg:h-[600px] cursor-pointer">
                 <img src="https://images.unsplash.com/photo-1451187534963-56586ee143b6?q=80&w=1800" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 opacity-70" alt="Global connectivity">
                 <div class="absolute inset-0 billboard-gradient flex flex-col justify-end p-6 md:p-12">
@@ -180,10 +189,10 @@
                         </h2>
                     </a>
                     <p class="text-white/80 text-sm md:text-lg classic-body leading-relaxed max-w-2xl mb-6 line-clamp-3 md:line-clamp-none">
-                        The era of one global economy is over. From the depths of the internet to the heights of orbital dominance, parallel systems are hardening.
+                        The era of one global economy is over. From the depths of the internet to the heights of orbital dominance, parallel systems are hardening into a new iron curtain.
                     </p>
                     <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 md:gap-8">
-                        <button class="w-full sm:w-auto bg-brand-gold text-white px-6 py-3 label-font text-[10px] font-bold hover:bg-white hover:text-brand-navy transition-all">READ FULL DOSSIER</button>
+                        <button class="w-full sm:w-auto bg-brand-gold text-white px-6 py-3 label-font text-[10px] font-bold hover:bg-white hover:text-brand-navy transition-all uppercase tracking-widest">Read the dossier</button>
                         <div class="text-white/50 label-font text-[9px] uppercase font-bold tracking-widest">
                             <i class="fas fa-map-marker-alt mr-2"></i> Report from Singapore
                         </div>
@@ -191,7 +200,6 @@
                 </div>
             </div>
 
-            <!-- Right: Secondary Stack -->
             <div class="lg:col-span-4 flex flex-col">
                 <div class="bg-white border border-gray-200 p-5 md:p-6 rounded-md h-full flex flex-col shadow-sm">
                     <h3 class="label-font font-black text-[10px] uppercase tracking-[0.2em] text-brand-navy border-b border-brand-navy/10 pb-3 mb-6">World Briefing</h3>
@@ -225,10 +233,8 @@
             </div>
         </section>
 
-        <!-- 4. RESPONSIVE NEWS WALL -->
+        <!-- 4. NEWS WALL -->
         <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 border-t premium-border pt-10 mb-16">
-            
-            <!-- Column 1 -->
             <div class="space-y-8">
                 <h3 class="label-font text-brand-gold font-bold text-xs uppercase tracking-widest border-b-2 border-brand-gold pb-2 inline-block mb-6">World Affairs</h3>
                 <article class="group">
@@ -238,13 +244,8 @@
                     <a href="#" class="serif-headline text-xl font-bold group-hover:text-brand-gold block mb-2 leading-tight">Brussels Mandates Carbon Passport for Global Travel</a>
                     <p class="text-xs classic-body text-gray-600 leading-relaxed line-clamp-3">The new directive effectively places a cap on international movement for non-essential business travel.</p>
                 </article>
-                <div class="space-y-4 pt-4 border-t border-gray-100">
-                    <a href="#" class="block font-bold text-sm hover:text-red-700 transition">India’s Tech Corridor eclipses Silicon Valley in VC funding</a>
-                    <a href="#" class="block font-bold text-sm hover:text-red-700 transition">African Union proposes single currency by 2030</a>
-                </div>
             </div>
 
-            <!-- Column 2 -->
             <div class="space-y-8">
                 <h3 class="label-font text-brand-navy font-bold text-xs uppercase tracking-widest border-b-2 border-brand-navy pb-2 inline-block mb-6">Markets</h3>
                 <article class="group">
@@ -252,16 +253,11 @@
                         <img src="https://images.unsplash.com/photo-1611974714024-462cd58a3644?q=80&w=800" class="w-full h-full object-cover group-hover:scale-105 transition-all">
                         <div class="absolute top-2 left-2 bg-black text-white px-2 py-0.5 text-[8px] font-bold uppercase tracking-tighter">Analysis</div>
                     </div>
-                    <a href="#" class="serif-headline text-xl font-bold group-hover:text-brand-gold block mb-2 leading-tight">The Death of the Dollar? Why BRICS+ is Winning the War</a>
+                    <a href="#" class="serif-headline text-xl font-bold group-hover:text-brand-gold block mb-2 leading-tight">The Death of the Dollar? Why BRICS+ is Winning</a>
                     <p class="text-xs classic-body text-gray-600 leading-relaxed line-clamp-3">How a digital-first commodity-backed ledger is challenging 80 years of USD global dominance.</p>
                 </article>
-                <div class="space-y-4 pt-4 border-t border-gray-100">
-                    <a href="#" class="block font-bold text-sm hover:text-red-700 transition">Nvidia market cap crosses $5 Trillion threshold</a>
-                    <a href="#" class="block font-bold text-sm hover:text-red-700 transition">Central Banks accelerate Gold buying to record levels</a>
-                </div>
             </div>
 
-            <!-- Column 3 -->
             <div class="space-y-8">
                 <h3 class="label-font text-blue-900 font-bold text-xs uppercase tracking-widest border-b-2 border-blue-900 pb-2 inline-block mb-6">Discovery</h3>
                 <article class="group">
@@ -272,59 +268,40 @@
                     <a href="#" class="serif-headline text-xl font-bold group-hover:text-brand-gold block mb-2 leading-tight">First Stable Fusion Reaction Achieved in Seoul</a>
                     <p class="text-xs classic-body text-gray-600 leading-relaxed line-clamp-3">The KSTAR reactor maintained stability for 5 minutes, marking the beginning of the post-scarcity era.</p>
                 </article>
-                <div class="space-y-4 pt-4 border-t border-gray-100">
-                    <a href="#" class="block font-bold text-sm hover:text-red-700 transition">Neuralink receives FDA approval for mass trials</a>
-                    <a href="#" class="block font-bold text-sm hover:text-red-700 transition">Quantum encryption broken by anonymous group</a>
-                </div>
             </div>
         </section>
 
-        <!-- 5. VIDEO SECTION (Touch Scroll on Mobile) -->
+        <!-- 5. VIDEO SECTION -->
         <section class="bg-[#051024] -mx-4 px-4 py-12 md:py-16 mb-12 rounded shadow-inner text-white">
             <div class="container mx-auto">
-                <div class="flex flex-col md:row md:items-center justify-between gap-4 mb-8">
-                    <h2 class="serif-headline text-2xl md:text-3xl font-bold italic">Circular Eagle <span class="text-brand-gold">Originals</span></h2>
-                    <a href="#" class="label-font text-[10px] font-bold text-white/60 hover:text-white uppercase tracking-widest underline underline-offset-8">Explore All Documentaries</a>
-                </div>
-                
+                <h2 class="serif-headline text-2xl md:text-3xl font-bold italic mb-8">Circular Eagle News <span class="text-brand-gold">Originals</span></h2>
                 <div class="flex overflow-x-auto pb-6 gap-6 no-scrollbar snap-x touch-pan-x md:grid md:grid-cols-3 md:overflow-visible">
-                    <!-- Video Card -->
                     <div class="min-w-[80vw] md:min-w-0 snap-center group cursor-pointer">
                         <div class="relative aspect-video overflow-hidden rounded-lg mb-4">
                             <img src="https://images.unsplash.com/photo-1444676632488-26a136c45b9b?q=80&w=800" class="w-full h-full object-cover brightness-75 group-hover:brightness-100 transition-all">
                             <div class="absolute inset-0 flex items-center justify-center">
                                 <div class="w-14 h-14 bg-brand-gold/90 rounded-full flex items-center justify-center shadow-xl"><i class="fas fa-play text-white ml-1"></i></div>
                             </div>
-                            <span class="absolute bottom-3 right-3 bg-black/80 text-white text-[9px] px-2 py-1 label-font font-bold rounded">18:42</span>
                         </div>
                         <h4 class="font-bold text-lg leading-tight group-hover:text-brand-gold">The Lithium War: Mining the Andes</h4>
-                        <p class="text-xs text-white/50 mt-2">Intelligence Series • EP 04</p>
                     </div>
-
-                    <!-- Video Card -->
                     <div class="min-w-[80vw] md:min-w-0 snap-center group cursor-pointer">
                         <div class="relative aspect-video overflow-hidden rounded-lg mb-4">
                             <img src="https://images.unsplash.com/photo-1493612276216-ee3925520721?q=80&w=800" class="w-full h-full object-cover brightness-75 group-hover:brightness-100 transition-all">
                             <div class="absolute inset-0 flex items-center justify-center">
                                 <div class="w-14 h-14 bg-brand-gold/90 rounded-full flex items-center justify-center shadow-xl"><i class="fas fa-play text-white ml-1"></i></div>
                             </div>
-                            <span class="absolute bottom-3 right-3 bg-black/80 text-white text-[9px] px-2 py-1 label-font font-bold rounded">24:05</span>
                         </div>
                         <h4 class="font-bold text-lg leading-tight group-hover:text-brand-gold">Cyber-Silk Road: Digital Imperialism</h4>
-                        <p class="text-xs text-white/50 mt-2">Geopolitical Spotlight • EP 12</p>
                     </div>
-
-                    <!-- Video Card -->
                     <div class="min-w-[80vw] md:min-w-0 snap-center group cursor-pointer">
                         <div class="relative aspect-video overflow-hidden rounded-lg mb-4">
                             <img src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=80&w=800" class="w-full h-full object-cover brightness-75 group-hover:brightness-100 transition-all">
                             <div class="absolute inset-0 flex items-center justify-center">
                                 <div class="w-14 h-14 bg-brand-gold/90 rounded-full flex items-center justify-center shadow-xl"><i class="fas fa-play text-white ml-1"></i></div>
                             </div>
-                            <span class="absolute bottom-3 right-3 bg-black/80 text-white text-[9px] px-2 py-1 label-font font-bold rounded">12:30</span>
                         </div>
                         <h4 class="font-bold text-lg leading-tight group-hover:text-brand-gold">Last Breath of the Tundra</h4>
-                        <p class="text-xs text-white/50 mt-2">Crisis Report • EP 08</p>
                     </div>
                 </div>
             </div>
@@ -332,51 +309,75 @@
 
     </main>
 
-    <!-- 6. GLOBAL FOOTER -->
-    <footer class="bg-black text-white pt-16 pb-8 border-t-[8px] md:border-t-[16px] border-brand-gold">
+    <!-- 6. FOOTER -->
+    <footer class="bg-[#051024] text-white pt-20 pb-12 border-t border-brand-gold/20">
         <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
-                <div class="col-span-1 lg:col-span-2">
-                    <h2 class="serif-headline text-3xl md:text-5xl font-black italic mb-6">CIRCULAR EAGLE</h2>
-                    <p class="text-gray-500 max-w-md classic-body leading-relaxed mb-8 text-sm">
-                        The definitive source for global intelligence. Analysis that moves markets and minds. Reborn for the multi-polar world.
+            <!-- Main Grid: Everything Left Aligned -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16 text-left">
+                
+                <!-- Branding Col: Wider spread for the full name -->
+                <div class="md:col-span-4">
+                    <h2 class="logo-font text-3xl md:text-4xl text-white mb-6">CIRCULAR EAGLE NEWS</h2>
+                    <p class="text-gray-400 classic-body leading-relaxed text-sm max-w-sm mb-8">
+                        The definitive source for global intelligence and breaking news. Analyzing the shifts of power in a multi-polar era with uncompromising depth.
                     </p>
-                    <div class="flex gap-6 text-xl">
-                        <a href="#" class="text-gray-500 hover:text-brand-gold"><i class="fab fa-x-twitter"></i></a>
-                        <a href="#" class="text-gray-500 hover:text-brand-gold"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="text-gray-500 hover:text-brand-gold"><i class="fab fa-linkedin"></i></a>
+                    <div class="flex gap-6 text-xl text-brand-gold">
+                        <a href="#" class="hover:text-white transition-colors"><i class="fab fa-x-twitter"></i></a>
+                        <a href="#" class="hover:text-white transition-colors"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="hover:text-white transition-colors"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="hover:text-white transition-colors"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
-                <div>
-                    <h5 class="label-font text-brand-gold font-bold text-xs uppercase tracking-widest mb-6">Sections</h5>
-                    <ul class="space-y-3 text-sm font-medium text-gray-500">
-                        <li><a href="#" class="hover:text-white transition">World News</a></li>
-                        <li><a href="#" class="hover:text-white transition">Economy</a></li>
-                        <li><a href="#" class="hover:text-white transition">Technology</a></li>
+                
+                <!-- Intelligence Column -->
+                <div class="md:col-span-2">
+                    <h4 class="label-font text-brand-gold text-xs font-bold uppercase tracking-widest mb-6 border-b border-brand-gold/20 pb-2 inline-block md:block">Intelligence</h4>
+                    <ul class="space-y-4 text-[11px] font-medium text-gray-400 label-font uppercase tracking-wider">
+                        <li><a href="#" class="hover:text-white transition-colors">World Affairs</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Global Markets</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Cyber Security</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Space Frontier</a></li>
                     </ul>
                 </div>
-                <div>
-                    <h5 class="label-font text-brand-gold font-bold text-xs uppercase tracking-widest mb-6">Intelligence</h5>
-                    <ul class="space-y-3 text-sm font-medium text-gray-500">
-                        <li><a href="#" class="hover:text-white transition">Newsletter</a></li>
-                        <li><a href="#" class="hover:text-white transition">Special Reports</a></li>
-                        <li><a href="#" class="hover:text-white transition">Secure Tip Line</a></li>
+
+                <!-- Network Column -->
+                <div class="md:col-span-2">
+                    <h4 class="label-font text-brand-gold text-xs font-bold uppercase tracking-widest mb-6 border-b border-brand-gold/20 pb-2 inline-block md:block">Network</h4>
+                    <ul class="space-y-4 text-[11px] font-medium text-gray-400 label-font uppercase tracking-wider">
+                        <li><a href="#" class="hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Bureaus</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Ethics Board</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Careers</a></li>
                     </ul>
+                </div>
+
+                <!-- Subscription Column -->
+                <div class="md:col-span-4">
+                    <h4 class="label-font text-brand-gold text-xs font-bold uppercase tracking-widest mb-6 border-b border-brand-gold/20 pb-2 inline-block md:block">Subscription</h4>
+                    <p class="text-gray-400 text-xs mb-6 max-w-xs">Receive the Daily Briefing directly to your inbox. Curated by our lead editors.</p>
+                    <div class="flex max-w-xs md:max-w-none">
+                        <input type="email" placeholder="Email Address" class="bg-white/5 border border-white/10 px-4 py-2 text-xs text-white focus:outline-none focus:border-brand-gold w-full max-w-[200px]">
+                        <button class="bg-brand-gold text-white px-4 py-2 text-[10px] font-bold label-font uppercase tracking-widest hover:bg-white hover:text-brand-navy transition-all shrink-0">Sign Up</button>
+                    </div>
                 </div>
             </div>
-            
-            <div class="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between text-[9px] text-gray-600 label-font font-bold uppercase tracking-widest gap-6">
-                <p>&copy; 2025 CIRCULAR EAGLE MEDIA GROUP. ALL RIGHTS RESERVED.</p>
-                <div class="flex flex-wrap gap-4 md:gap-6">
-                    <a href="#" class="hover:text-white">Privacy</a>
-                    <a href="#" class="hover:text-white">Terms</a>
-                    <a href="#" class="hover:text-white">Cookies</a>
+
+            <!-- Bottom Legal Bar -->
+            <div class="pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between text-[10px] text-gray-500 label-font font-bold uppercase tracking-widest gap-8 text-left">
+                <div class="space-y-2">
+                    <p>&copy; 2025 CIRCULAR EAGLE NEWS MEDIA GROUP.</p>
+                    <p class="text-[9px] text-gray-600 normal-case italic font-normal">Headquartered in London with bureaus in Singapore, New York, and Brussels.</p>
+                </div>
+                <div class="flex flex-wrap gap-x-8 gap-y-4 items-center">
+                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                    <a href="#" class="hover:text-white transition-colors">Tip Line</a>
+                    <a href="#" class="hover:text-white transition-colors">Contact</a>
                 </div>
             </div>
         </div>
     </footer>
 
-    <!-- INTERACTION SCRIPT -->
     <script>
         const burgerBtn = document.getElementById('burger-btn');
         const closeBtn = document.getElementById('close-menu');
@@ -399,16 +400,6 @@
         burgerBtn.addEventListener('click', toggleMenu);
         closeBtn.addEventListener('click', toggleMenu);
         overlay.addEventListener('click', toggleMenu);
-
-        // Handle touch swipes to close menu
-        let touchStartX = 0;
-        mobileMenu.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; }, {passive: true});
-        mobileMenu.addEventListener('touchend', (e) => {
-            const touchEndX = e.changedTouches[0].screenX;
-            if (touchStartX - touchEndX > 50) { // Swipe left
-                toggleMenu();
-            }
-        }, {passive: true});
     </script>
 </body>
 </html>
