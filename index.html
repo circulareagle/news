@@ -1,13 +1,10 @@
 <!DOCTYPE html>
-<html lang="en"> 
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>Circular Eagle | World Intelligence & Global Breaking News</title>
     
-    <link rel="icon" type="image/png" href="https://via.placeholder.com/32x32.png?text=CE">
-
     <!-- External Assets -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -27,18 +24,23 @@
             font-family: 'Inter', sans-serif;
             background-color: var(--paper-bg);
             color: #1a1a1a;
+            overflow-x: hidden;
         }
 
         .serif-headline { font-family: 'Playfair Display', serif; }
         .classic-body { font-family: 'Libre Baskerville', serif; }
         .label-font { font-family: 'Oswald', sans-serif; letter-spacing: 0.05em; }
 
-        /* Billboard Styling */
-        .billboard-gradient {
-            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0) 100%);
+        /* Mobile specific fixes */
+        @media (max-width: 768px) {
+            .mobile-header-text { font-size: 1.75rem !important; }
+            .billboard-height { height: 450px !important; }
         }
 
-        /* Nav & Sidebars */
+        .billboard-gradient {
+            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 40%, rgba(0,0,0,0) 100%);
+        }
+
         #mobile-menu {
             transform: translateX(-100%);
             transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -59,250 +61,270 @@
         .news-stack-item { border-bottom: 1px solid var(--paper-border); padding-bottom: 1rem; margin-bottom: 1rem; }
         .news-stack-item:last-child { border: none; }
 
-        /* Scrollbars */
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
         .sticky-header {
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
             background-color: rgba(253, 252, 248, 0.98);
             backdrop-filter: blur(8px);
         }
 
-        .hover-lift { transition: transform 0.2s ease; }
-        .hover-lift:hover { transform: translateY(-3px); }
+        /* Improved Marquee for Mobile */
+        .marquee-container {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .marquee-content {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 30s linear infinite;
+        }
+        @keyframes marquee {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-100%, 0); }
+        }
     </style>
 </head>
 <body class="antialiased">
 
-    <!-- MOBILE NAVIGATION -->
-    <div id="mobile-overlay" class="fixed inset-0 bg-black/70 z-[60] hidden opacity-0 transition-opacity duration-300"></div>
-    <nav id="mobile-menu" class="fixed top-0 left-0 h-full w-80 bg-[#051024] text-white z-[70] p-8 shadow-2xl">
-        <div class="flex justify-between items-center mb-12">
+    <!-- MOBILE NAVIGATION OVERLAY -->
+    <div id="mobile-overlay" class="fixed inset-0 bg-black/70 z-[60] hidden transition-opacity duration-300"></div>
+    <nav id="mobile-menu" class="fixed top-0 left-0 h-full w-[85%] max-w-sm bg-[#051024] text-white z-[70] p-6 shadow-2xl overflow-y-auto">
+        <div class="flex justify-between items-center mb-10">
             <h2 class="label-font font-bold text-xl text-brand-gold italic">CE SECTIONS</h2>
-            <button id="close-menu" class="text-2xl p-2"><i class="fas fa-times"></i></button>
+            <button id="close-menu" class="text-2xl p-2 w-10 h-10 flex items-center justify-center bg-white/10 rounded-full"><i class="fas fa-times"></i></button>
         </div>
-        <ul class="space-y-6 label-font text-lg tracking-wide">
-            <li><a href="#" class="hover:text-brand-gold transition flex justify-between items-center">WORLD <span><i class="fas fa-chevron-right text-xs opacity-30"></i></span></a></li>
-            <li><a href="#" class="hover:text-brand-gold transition flex justify-between items-center">BUSINESS <span><i class="fas fa-chevron-right text-xs opacity-30"></i></span></a></li>
-            <li><a href="#" class="hover:text-brand-gold transition flex justify-between items-center">TECH <span><i class="fas fa-chevron-right text-xs opacity-30"></i></span></a></li>
-            <li><a href="#" class="hover:text-brand-gold transition flex justify-between items-center">SCIENCE <span><i class="fas fa-chevron-right text-xs opacity-30"></i></span></a></li>
-            <li><a href="#" class="hover:text-brand-gold transition flex justify-between items-center">OPINION <span><i class="fas fa-chevron-right text-xs opacity-30"></i></span></a></li>
-            <li class="pt-6"><a href="#" class="text-red-500 font-bold flex items-center gap-2"><span class="w-2 h-2 bg-red-500 rounded-full animate-ping"></span> LIVE TV</a></li>
+        <ul class="space-y-4 label-font text-lg tracking-wide">
+            <li><a href="#" class="block py-3 border-b border-white/10 hover:text-brand-gold transition flex justify-between items-center">WORLD <span><i class="fas fa-chevron-right text-xs opacity-30"></i></span></a></li>
+            <li><a href="#" class="block py-3 border-b border-white/10 hover:text-brand-gold transition flex justify-between items-center">POLITICS <span><i class="fas fa-chevron-right text-xs opacity-30"></i></span></a></li>
+            <li><a href="#" class="block py-3 border-b border-white/10 hover:text-brand-gold transition flex justify-between items-center">BUSINESS <span><i class="fas fa-chevron-right text-xs opacity-30"></i></span></a></li>
+            <li><a href="#" class="block py-3 border-b border-white/10 hover:text-brand-gold transition flex justify-between items-center">TECH <span><i class="fas fa-chevron-right text-xs opacity-30"></i></span></a></li>
+            <li><a href="#" class="block py-3 border-b border-white/10 hover:text-brand-gold transition flex justify-between items-center">SCIENCE <span><i class="fas fa-chevron-right text-xs opacity-30"></i></span></a></li>
+            <li><a href="#" class="block py-3 border-b border-white/10 hover:text-brand-gold transition flex justify-between items-center">OPINION <span><i class="fas fa-chevron-right text-xs opacity-30"></i></span></a></li>
+            <li class="pt-6"><a href="#" class="text-red-500 font-bold flex items-center gap-3"><span class="w-3 h-3 bg-red-500 rounded-full animate-ping"></span> LIVE TV</a></li>
         </ul>
+        <div class="mt-12 pt-6 border-t border-white/10">
+            <button class="w-full bg-brand-gold py-4 text-sm font-bold tracking-widest label-font uppercase mb-4">Subscribe Now</button>
+            <div class="flex justify-center gap-6 text-xl text-white/50">
+                <i class="fab fa-x-twitter"></i>
+                <i class="fab fa-instagram"></i>
+                <i class="fab fa-linkedin"></i>
+            </div>
+        </div>
     </nav>
 
     <!-- 1. BREAKING NEWS BAR -->
-    <div class="bg-black text-white py-2 overflow-hidden border-b border-white/10">
-        <div class="container mx-auto px-4 flex items-center">
-            <span class="breaking-tag px-3 py-0.5 text-[10px] font-black label-font uppercase mr-4 shrink-0">Breaking</span>
-            <div class="text-xs label-font tracking-wide whitespace-nowrap marquee">
-                <a href="#" class="hover:text-brand-gold">Global Markets React to Sudden Central Bank Interest Rate Hike — UN Security Council Convenes Over Arctic Territorial Dispute — Silicon Valley bracing for "The Great Regulation" as EU passes AI Act.</a>
+    <div class="bg-black text-white py-2 border-b border-white/10">
+        <div class="container mx-auto px-4 flex items-center overflow-hidden">
+            <span class="breaking-tag px-2 py-0.5 text-[9px] font-black label-font uppercase mr-3 shrink-0 rounded-sm">Breaking</span>
+            <div class="marquee-container text-[11px] label-font tracking-wide">
+                <div class="marquee-content">
+                    <a href="#" class="hover:text-brand-gold">Global Markets React to Sudden Central Bank Interest Rate Hike — UN Security Council Convenes Over Arctic Territorial Dispute — Silicon Valley bracing for "The Great Regulation" as EU passes AI Act.</a>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- 2. MAIN HEADER -->
+    <!-- 2. MAIN HEADER (Responsive Redesign) -->
     <header class="sticky-header border-b premium-border sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-4">
-            <div class="flex justify-between items-center">
-                <!-- Navigation -->
-                <div class="flex items-center gap-6">
-                    <button id="burger-btn" class="text-2xl hover:text-brand-gold transition-all">
+        <div class="container mx-auto px-4 py-3 md:py-5">
+            <div class="flex items-center justify-between relative">
+                
+                <!-- Left: Burger (Mobile Friendly Size) -->
+                <div class="flex-1 flex items-center">
+                    <button id="burger-btn" class="w-10 h-10 flex items-center justify-center text-2xl hover:text-brand-gold transition-all" aria-label="Menu">
                         <i class="fas fa-bars"></i>
                     </button>
-                    <nav class="hidden xl:flex items-center gap-8 label-font text-[11px] font-bold uppercase tracking-widest text-brand-navy">
-                        <a href="#" class="hover:text-brand-gold border-b-2 border-transparent hover:border-brand-gold transition-all">World</a>
-                        <a href="#" class="hover:text-brand-gold border-b-2 border-transparent hover:border-brand-gold transition-all">Politics</a>
-                        <a href="#" class="hover:text-brand-gold border-b-2 border-transparent hover:border-brand-gold transition-all">Business</a>
-                        <a href="#" class="hover:text-brand-gold border-b-2 border-transparent hover:border-brand-gold transition-all">Science</a>
-                        <a href="#" class="hover:text-brand-gold border-b-2 border-transparent hover:border-brand-gold transition-all">Health</a>
-                        <a href="#" class="hover:text-brand-gold border-b-2 border-transparent hover:border-brand-gold transition-all">Style</a>
+                    <!-- Desktop Nav -->
+                    <nav class="hidden xl:flex items-center ml-8 gap-6 label-font text-[10px] font-bold uppercase tracking-widest text-brand-navy">
+                        <a href="#" class="hover:text-brand-gold">World</a>
+                        <a href="#" class="hover:text-brand-gold">Business</a>
+                        <a href="#" class="hover:text-brand-gold">Tech</a>
+                        <a href="#" class="hover:text-brand-gold">Science</a>
                     </nav>
                 </div>
 
-                <!-- Branding -->
-                <div class="text-center absolute left-1/2 -translate-x-1/2">
+                <!-- Center: Logo (Scales for Mobile) -->
+                <div class="flex-shrink-0 text-center px-4">
                     <a href="/" class="group">
-                        <h1 class="serif-headline text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter leading-none italic text-brand-navy group-hover:text-black transition-colors">
-                            CIRCULAR EAGLE
+                        <h1 class="serif-headline mobile-header-text text-2xl md:text-5xl font-black tracking-tighter leading-none italic text-brand-navy group-hover:text-black transition-colors">
+                            CIRCULAR EAGLE NEWS
                         </h1>
-                        <p class="label-font text-[8px] md:text-[10px] tracking-[.4em] mt-1 text-brand-gold font-bold uppercase">Intelligence For A Multi-Polar Era</p>
+                        <p class="label-font text-[7px] md:text-[9px] tracking-[.3em] mt-0.5 text-brand-gold font-bold uppercase">Intelligence For A Multi-Polar Era</p>
                     </a>
                 </div>
 
-                <!-- Search/Subscribe -->
-                <div class="flex items-center gap-4">
-                    <button class="hidden md:flex items-center gap-2 label-font text-[10px] font-bold hover:text-brand-gold">
-                        <i class="fas fa-search"></i> SEARCH
+                <!-- Right: Buttons -->
+                <div class="flex-1 flex justify-end items-center gap-3">
+                    <button class="hidden md:flex items-center gap-2 label-font text-[10px] font-bold hover:text-brand-gold pr-4">
+                        <i class="fas fa-search"></i>
                     </button>
-                    <button class="bg-[#8B0000] text-white px-6 py-2 text-[10px] font-bold label-font hover:bg-black transition-all shadow-md">SUBSCRIBE</button>
+                    <button class="bg-[#8B0000] text-white px-3 md:px-6 py-1.5 md:py-2 text-[9px] md:text-[10px] font-bold label-font hover:bg-black transition-all shadow-md rounded-sm">JOIN</button>
                 </div>
             </div>
         </div>
     </header>
 
-    <main class="container mx-auto px-4 py-6">
+    <main class="container mx-auto px-4 py-4 md:py-8">
         
         <!-- 3. BILLBOARD HERO SECTION (Billboard Look) -->
         <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-12">
             
-            <!-- Left: Major Headline (The Billboard) -->
-            <div class="lg:col-span-8 group relative overflow-hidden rounded shadow-2xl bg-black aspect-video lg:aspect-auto lg:h-[600px] cursor-pointer">
-                <img src="https://images.unsplash.com/photo-1451187534963-56586ee143b6?q=80&w=1800" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 opacity-80" alt="Global connectivity hero">
-                <div class="absolute inset-0 billboard-gradient flex flex-col justify-end p-8 md:p-12">
-                    <span class="bg-red-700 text-white label-font text-[10px] font-bold px-3 py-1 uppercase tracking-widest self-start mb-6">Special Report</span>
+            <!-- Left: Major Headline -->
+            <div class="lg:col-span-8 group relative overflow-hidden rounded-md shadow-xl bg-black h-[400px] md:h-[500px] lg:h-[600px] cursor-pointer">
+                <img src="https://images.unsplash.com/photo-1451187534963-56586ee143b6?q=80&w=1800" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 opacity-70" alt="Global connectivity">
+                <div class="absolute inset-0 billboard-gradient flex flex-col justify-end p-6 md:p-12">
+                    <span class="bg-red-700 text-white label-font text-[9px] font-bold px-2 py-0.5 uppercase tracking-widest self-start mb-4">Special Intelligence</span>
                     <a href="#">
-                        <h2 class="serif-headline text-4xl md:text-6xl lg:text-7xl text-white font-black leading-[1.1] mb-6 group-hover:text-brand-gold transition-colors">
+                        <h2 class="serif-headline text-2xl md:text-5xl lg:text-6xl text-white font-black leading-[1.15] mb-4 group-hover:text-brand-gold transition-colors">
                             The Great Decoupling: How The World Is Splitting In Two
                         </h2>
                     </a>
-                    <p class="text-white/80 text-lg md:text-xl classic-body leading-relaxed max-w-2xl mb-8">
-                        The era of one global economy is over. From the depths of the internet to the heights of orbital dominance, the parallel systems of West and East are hardening into a new iron curtain.
+                    <p class="text-white/80 text-sm md:text-lg classic-body leading-relaxed max-w-2xl mb-6 line-clamp-3 md:line-clamp-none">
+                        The era of one global economy is over. From the depths of the internet to the heights of orbital dominance, parallel systems are hardening.
                     </p>
-                    <div class="flex items-center gap-8">
-                        <button class="bg-brand-gold text-white px-8 py-3 label-font text-xs font-bold hover:bg-white hover:text-brand-navy transition-all">READ THE INTELLIGENCE</button>
-                        <div class="text-white/40 label-font text-[10px] uppercase font-bold tracking-widest hidden md:block">
-                            <i class="fas fa-map-marker-alt mr-2"></i> Report from Singapore & Geneva
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 md:gap-8">
+                        <button class="w-full sm:w-auto bg-brand-gold text-white px-6 py-3 label-font text-[10px] font-bold hover:bg-white hover:text-brand-navy transition-all">READ FULL DOSSIER</button>
+                        <div class="text-white/50 label-font text-[9px] uppercase font-bold tracking-widest">
+                            <i class="fas fa-map-marker-alt mr-2"></i> Report from Singapore
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Right: Secondary Stack (CNN Style) -->
-            <div class="lg:col-span-4 flex flex-col gap-6">
-                <div class="bg-[#f0ede4] p-6 rounded h-full flex flex-col">
-                    <h3 class="label-font font-black text-xs uppercase tracking-[0.2em] text-brand-navy border-b border-brand-navy/10 pb-4 mb-6">Top Stories</h3>
+            <!-- Right: Secondary Stack -->
+            <div class="lg:col-span-4 flex flex-col">
+                <div class="bg-white border border-gray-200 p-5 md:p-6 rounded-md h-full flex flex-col shadow-sm">
+                    <h3 class="label-font font-black text-[10px] uppercase tracking-[0.2em] text-brand-navy border-b border-brand-navy/10 pb-3 mb-6">World Briefing</h3>
                     
                     <div class="space-y-6 flex-grow">
                         <article class="news-stack-item group">
-                            <a href="#" class="serif-headline text-xl font-bold leading-tight group-hover:text-brand-gold block mb-2">Tokyo Nikkei Surge: Why Investors are Fleeing to the East</a>
-                            <p class="text-xs classic-body text-gray-600 line-clamp-2">Inside the numbers that suggest a permanent shift in market liquidity.</p>
+                            <a href="#" class="serif-headline text-lg md:text-xl font-bold leading-tight group-hover:text-brand-gold block mb-1">Tokyo Nikkei Surge: Why Investors are Fleeing to the East</a>
+                            <p class="text-xs classic-body text-gray-500 line-clamp-2">Inside the numbers that suggest a permanent shift in market liquidity.</p>
                         </article>
 
-                        <article class="news-stack-item group">
-                            <a href="#" class="serif-headline text-xl font-bold leading-tight group-hover:text-brand-gold block mb-2">SpaceX Reveals First Visuals of 'Starbase One' Lunar Outpost</a>
-                            <div class="relative h-32 w-full mt-3 overflow-hidden rounded">
-                                <img src="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?q=80&w=800" class="w-full h-full object-cover group-hover:scale-110 transition-transform">
+                        <article class="news-stack-item group flex gap-4">
+                            <div class="flex-1">
+                                <a href="#" class="serif-headline text-lg font-bold leading-tight group-hover:text-brand-gold block mb-1">SpaceX 'Starbase One' Lunar Outpost Visuals</a>
+                                <span class="text-[9px] label-font font-bold text-gray-400 uppercase">34m ago</span>
+                            </div>
+                            <div class="w-20 h-20 shrink-0 overflow-hidden rounded bg-gray-100">
+                                <img src="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?q=80&w=300" class="w-full h-full object-cover">
                             </div>
                         </article>
 
                         <article class="news-stack-item group">
-                            <a href="#" class="serif-headline text-xl font-bold leading-tight group-hover:text-brand-gold block mb-2">Arctic Sovereignty: Why the North Pole is the New Gulf</a>
-                            <p class="text-xs classic-body text-gray-600 line-clamp-2">Five nations move fleet assets into contested waters as ice melts at record pace.</p>
+                            <a href="#" class="serif-headline text-lg font-bold leading-tight group-hover:text-brand-gold block mb-1">Arctic Sovereignty: New North Pole Battle</a>
+                            <p class="text-xs classic-body text-gray-500">Five nations move fleet assets into contested waters.</p>
                         </article>
                     </div>
 
-                    <a href="#" class="mt-6 label-font text-[10px] font-black text-brand-navy hover:text-brand-gold flex items-center justify-between">
-                        VIEW ALL TOP STORIES <i class="fas fa-arrow-right"></i>
+                    <a href="#" class="mt-6 p-3 bg-gray-50 rounded text-center label-font text-[10px] font-black text-brand-navy hover:bg-brand-navy hover:text-white transition-all uppercase">
+                        View All Intelligence <i class="fas fa-arrow-right ml-2"></i>
                     </a>
                 </div>
             </div>
         </section>
 
-        <!-- 4. THREE-COLUMN SECTION (BBC/CNN News Wall) -->
-        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 border-t premium-border pt-12 mb-16">
+        <!-- 4. RESPONSIVE NEWS WALL -->
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 border-t premium-border pt-10 mb-16">
             
-            <!-- Column 1: World & Geopolitics -->
-            <div>
-                <h3 class="label-font text-brand-gold font-bold text-sm uppercase tracking-widest border-b-2 border-brand-gold pb-2 mb-8">World Affairs</h3>
-                <div class="space-y-10">
-                    <article class="group">
-                        <div class="aspect-video bg-gray-200 mb-4 overflow-hidden rounded-sm">
-                            <img src="https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?q=80&w=800" class="w-full h-full object-cover group-hover:scale-105 transition-all">
-                        </div>
-                        <a href="#" class="serif-headline text-2xl font-bold group-hover:text-brand-gold block mb-3 leading-tight">Brussels Mandates Carbon Passport for Global Travel</a>
-                        <p class="text-sm classic-body text-gray-700 leading-relaxed">The new directive effectively places a cap on international movement for non-essential business.</p>
-                    </article>
-                    <div class="h-px bg-gray-200"></div>
-                    <ul class="space-y-4">
-                        <li><a href="#" class="font-bold text-sm hover:text-red-700 transition">India’s Tech Corridor eclipses Silicon Valley in VC funding</a></li>
-                        <li><a href="#" class="font-bold text-sm hover:text-red-700 transition">African Union proposes single currency by 2030</a></li>
-                        <li><a href="#" class="font-bold text-sm hover:text-red-700 transition">German Industrial production hits 20-year low</a></li>
-                    </ul>
+            <!-- Column 1 -->
+            <div class="space-y-8">
+                <h3 class="label-font text-brand-gold font-bold text-xs uppercase tracking-widest border-b-2 border-brand-gold pb-2 inline-block mb-6">World Affairs</h3>
+                <article class="group">
+                    <div class="aspect-video bg-gray-200 mb-4 overflow-hidden rounded-sm">
+                        <img src="https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?q=80&w=800" class="w-full h-full object-cover group-hover:scale-105 transition-all">
+                    </div>
+                    <a href="#" class="serif-headline text-xl font-bold group-hover:text-brand-gold block mb-2 leading-tight">Brussels Mandates Carbon Passport for Global Travel</a>
+                    <p class="text-xs classic-body text-gray-600 leading-relaxed line-clamp-3">The new directive effectively places a cap on international movement for non-essential business travel.</p>
+                </article>
+                <div class="space-y-4 pt-4 border-t border-gray-100">
+                    <a href="#" class="block font-bold text-sm hover:text-red-700 transition">India’s Tech Corridor eclipses Silicon Valley in VC funding</a>
+                    <a href="#" class="block font-bold text-sm hover:text-red-700 transition">African Union proposes single currency by 2030</a>
                 </div>
             </div>
 
-            <!-- Column 2: Business & Finance -->
-            <div>
-                <h3 class="label-font text-brand-navy font-bold text-sm uppercase tracking-widest border-b-2 border-brand-navy pb-2 mb-8">Business & Markets</h3>
-                <div class="space-y-10">
-                    <article class="group">
-                        <div class="aspect-video bg-gray-200 mb-4 overflow-hidden rounded-sm relative">
-                            <img src="https://images.unsplash.com/photo-1611974714024-462cd58a3644?q=80&w=800" class="w-full h-full object-cover group-hover:scale-105 transition-all">
-                            <div class="absolute top-2 left-2 bg-black text-white px-2 py-0.5 text-[8px] font-bold uppercase tracking-tighter">Analysis</div>
-                        </div>
-                        <a href="#" class="serif-headline text-2xl font-bold group-hover:text-brand-gold block mb-3 leading-tight">The Death of the Dollar? Why BRICS+ is Winning the Currency War</a>
-                        <p class="text-sm classic-body text-gray-700 leading-relaxed">How a digital-first commodity-backed ledger is challenging 80 years of USD dominance.</p>
-                    </article>
-                    <div class="h-px bg-gray-200"></div>
-                    <ul class="space-y-4">
-                        <li><a href="#" class="font-bold text-sm hover:text-red-700 transition">Nvidia market cap crosses $5 Trillion threshold</a></li>
-                        <li><a href="#" class="font-bold text-sm hover:text-red-700 transition">Central Banks accelerate Gold buying to record levels</a></li>
-                        <li><a href="#" class="font-bold text-sm hover:text-red-700 transition">Real Estate collapse in commercial hubs continues</a></li>
-                    </ul>
+            <!-- Column 2 -->
+            <div class="space-y-8">
+                <h3 class="label-font text-brand-navy font-bold text-xs uppercase tracking-widest border-b-2 border-brand-navy pb-2 inline-block mb-6">Markets</h3>
+                <article class="group">
+                    <div class="aspect-video bg-gray-200 mb-4 overflow-hidden rounded-sm relative">
+                        <img src="https://images.unsplash.com/photo-1611974714024-462cd58a3644?q=80&w=800" class="w-full h-full object-cover group-hover:scale-105 transition-all">
+                        <div class="absolute top-2 left-2 bg-black text-white px-2 py-0.5 text-[8px] font-bold uppercase tracking-tighter">Analysis</div>
+                    </div>
+                    <a href="#" class="serif-headline text-xl font-bold group-hover:text-brand-gold block mb-2 leading-tight">The Death of the Dollar? Why BRICS+ is Winning the War</a>
+                    <p class="text-xs classic-body text-gray-600 leading-relaxed line-clamp-3">How a digital-first commodity-backed ledger is challenging 80 years of USD global dominance.</p>
+                </article>
+                <div class="space-y-4 pt-4 border-t border-gray-100">
+                    <a href="#" class="block font-bold text-sm hover:text-red-700 transition">Nvidia market cap crosses $5 Trillion threshold</a>
+                    <a href="#" class="block font-bold text-sm hover:text-red-700 transition">Central Banks accelerate Gold buying to record levels</a>
                 </div>
             </div>
 
-            <!-- Column 3: Tech & Innovation -->
-            <div>
-                <h3 class="label-font text-blue-900 font-bold text-sm uppercase tracking-widest border-b-2 border-blue-900 pb-2 mb-8">Science & Tech</h3>
-                <div class="space-y-10">
-                    <article class="group">
-                        <div class="aspect-video bg-gray-200 mb-4 overflow-hidden rounded-sm relative">
-                            <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=800" class="w-full h-full object-cover group-hover:scale-105 transition-all">
-                            <div class="absolute top-2 left-2 bg-blue-900 text-white px-2 py-0.5 text-[8px] font-bold uppercase tracking-tighter">Discovery</div>
-                        </div>
-                        <a href="#" class="serif-headline text-2xl font-bold group-hover:text-brand-gold block mb-3 leading-tight">First Stable Fusion Reaction Achieved in South Korea</a>
-                        <p class="text-sm classic-body text-gray-700 leading-relaxed">The KSTAR reactor maintained stability for 5 minutes, marking the beginning of the post-scarcity era.</p>
-                    </article>
-                    <div class="h-px bg-gray-200"></div>
-                    <ul class="space-y-4">
-                        <li><a href="#" class="font-bold text-sm hover:text-red-700 transition">Neuralink receives FDA approval for mass trials</a></li>
-                        <li><a href="#" class="font-bold text-sm hover:text-red-700 transition">Quantum encryption broken by anonymous group</a></li>
-                        <li><a href="#" class="font-bold text-sm hover:text-red-700 transition">The ethical dilemma of AI-generated politicians</a></li>
-                    </ul>
+            <!-- Column 3 -->
+            <div class="space-y-8">
+                <h3 class="label-font text-blue-900 font-bold text-xs uppercase tracking-widest border-b-2 border-blue-900 pb-2 inline-block mb-6">Discovery</h3>
+                <article class="group">
+                    <div class="aspect-video bg-gray-200 mb-4 overflow-hidden rounded-sm relative">
+                        <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=800" class="w-full h-full object-cover group-hover:scale-105 transition-all">
+                        <div class="absolute top-2 left-2 bg-blue-900 text-white px-2 py-0.5 text-[8px] font-bold uppercase tracking-tighter">Science</div>
+                    </div>
+                    <a href="#" class="serif-headline text-xl font-bold group-hover:text-brand-gold block mb-2 leading-tight">First Stable Fusion Reaction Achieved in Seoul</a>
+                    <p class="text-xs classic-body text-gray-600 leading-relaxed line-clamp-3">The KSTAR reactor maintained stability for 5 minutes, marking the beginning of the post-scarcity era.</p>
+                </article>
+                <div class="space-y-4 pt-4 border-t border-gray-100">
+                    <a href="#" class="block font-bold text-sm hover:text-red-700 transition">Neuralink receives FDA approval for mass trials</a>
+                    <a href="#" class="block font-bold text-sm hover:text-red-700 transition">Quantum encryption broken by anonymous group</a>
                 </div>
             </div>
         </section>
 
-        <!-- 5. VIDEO SECTION (Full Width Billboard Look) -->
-        <section class="bg-[#051024] -mx-4 px-4 py-16 mb-16 rounded shadow-inner">
+        <!-- 5. VIDEO SECTION (Touch Scroll on Mobile) -->
+        <section class="bg-[#051024] -mx-4 px-4 py-12 md:py-16 mb-12 rounded shadow-inner text-white">
             <div class="container mx-auto">
-                <div class="flex items-center justify-between mb-10">
-                    <h2 class="serif-headline text-3xl font-bold text-white italic">Circular Eagle <span class="text-brand-gold">Originals</span></h2>
-                    <a href="#" class="label-font text-xs font-bold text-white/60 hover:text-white uppercase tracking-widest underline underline-offset-8">Browse Documentaries</a>
+                <div class="flex flex-col md:row md:items-center justify-between gap-4 mb-8">
+                    <h2 class="serif-headline text-2xl md:text-3xl font-bold italic">Circular Eagle <span class="text-brand-gold">Originals</span></h2>
+                    <a href="#" class="label-font text-[10px] font-bold text-white/60 hover:text-white uppercase tracking-widest underline underline-offset-8">Explore All Documentaries</a>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="group cursor-pointer">
+                
+                <div class="flex overflow-x-auto pb-6 gap-6 no-scrollbar snap-x touch-pan-x md:grid md:grid-cols-3 md:overflow-visible">
+                    <!-- Video Card -->
+                    <div class="min-w-[80vw] md:min-w-0 snap-center group cursor-pointer">
                         <div class="relative aspect-video overflow-hidden rounded-lg mb-4">
                             <img src="https://images.unsplash.com/photo-1444676632488-26a136c45b9b?q=80&w=800" class="w-full h-full object-cover brightness-75 group-hover:brightness-100 transition-all">
-                            <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                <div class="w-16 h-16 bg-white/20 backdrop-blur rounded-full flex items-center justify-center border border-white/40"><i class="fas fa-play text-white text-xl"></i></div>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="w-14 h-14 bg-brand-gold/90 rounded-full flex items-center justify-center shadow-xl"><i class="fas fa-play text-white ml-1"></i></div>
                             </div>
-                            <span class="absolute bottom-3 right-3 bg-black/80 text-white text-[10px] px-2 py-1 label-font font-bold">18:42</span>
+                            <span class="absolute bottom-3 right-3 bg-black/80 text-white text-[9px] px-2 py-1 label-font font-bold rounded">18:42</span>
                         </div>
-                        <h4 class="text-white font-bold text-lg leading-tight group-hover:text-brand-gold">The Lithium War: Mining the Andes</h4>
+                        <h4 class="font-bold text-lg leading-tight group-hover:text-brand-gold">The Lithium War: Mining the Andes</h4>
+                        <p class="text-xs text-white/50 mt-2">Intelligence Series • EP 04</p>
                     </div>
-                    <div class="group cursor-pointer">
+
+                    <!-- Video Card -->
+                    <div class="min-w-[80vw] md:min-w-0 snap-center group cursor-pointer">
                         <div class="relative aspect-video overflow-hidden rounded-lg mb-4">
                             <img src="https://images.unsplash.com/photo-1493612276216-ee3925520721?q=80&w=800" class="w-full h-full object-cover brightness-75 group-hover:brightness-100 transition-all">
-                            <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                <div class="w-16 h-16 bg-white/20 backdrop-blur rounded-full flex items-center justify-center border border-white/40"><i class="fas fa-play text-white text-xl"></i></div>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="w-14 h-14 bg-brand-gold/90 rounded-full flex items-center justify-center shadow-xl"><i class="fas fa-play text-white ml-1"></i></div>
                             </div>
-                            <span class="absolute bottom-3 right-3 bg-black/80 text-white text-[10px] px-2 py-1 label-font font-bold">24:05</span>
+                            <span class="absolute bottom-3 right-3 bg-black/80 text-white text-[9px] px-2 py-1 label-font font-bold rounded">24:05</span>
                         </div>
-                        <h4 class="text-white font-bold text-lg leading-tight group-hover:text-brand-gold">Cyber-Silk Road: Digital Imperialism Explained</h4>
+                        <h4 class="font-bold text-lg leading-tight group-hover:text-brand-gold">Cyber-Silk Road: Digital Imperialism</h4>
+                        <p class="text-xs text-white/50 mt-2">Geopolitical Spotlight • EP 12</p>
                     </div>
-                    <div class="group cursor-pointer">
+
+                    <!-- Video Card -->
+                    <div class="min-w-[80vw] md:min-w-0 snap-center group cursor-pointer">
                         <div class="relative aspect-video overflow-hidden rounded-lg mb-4">
                             <img src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=80&w=800" class="w-full h-full object-cover brightness-75 group-hover:brightness-100 transition-all">
-                            <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                <div class="w-16 h-16 bg-white/20 backdrop-blur rounded-full flex items-center justify-center border border-white/40"><i class="fas fa-play text-white text-xl"></i></div>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="w-14 h-14 bg-brand-gold/90 rounded-full flex items-center justify-center shadow-xl"><i class="fas fa-play text-white ml-1"></i></div>
                             </div>
-                            <span class="absolute bottom-3 right-3 bg-black/80 text-white text-[10px] px-2 py-1 label-font font-bold">12:30</span>
+                            <span class="absolute bottom-3 right-3 bg-black/80 text-white text-[9px] px-2 py-1 label-font font-bold rounded">12:30</span>
                         </div>
-                        <h4 class="text-white font-bold text-lg leading-tight group-hover:text-brand-gold">Last Breath of the Tundra: A Survival Story</h4>
+                        <h4 class="font-bold text-lg leading-tight group-hover:text-brand-gold">Last Breath of the Tundra</h4>
+                        <p class="text-xs text-white/50 mt-2">Crisis Report • EP 08</p>
                     </div>
                 </div>
             </div>
@@ -311,49 +333,44 @@
     </main>
 
     <!-- 6. GLOBAL FOOTER -->
-    <footer class="bg-black text-white pt-24 pb-12 mt-16 border-t-[16px] border-brand-gold">
+    <footer class="bg-black text-white pt-16 pb-8 border-t-[8px] md:border-t-[16px] border-brand-gold">
         <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
                 <div class="col-span-1 lg:col-span-2">
-                    <h2 class="serif-headline text-5xl font-black italic mb-6">CIRCULAR EAGLE</h2>
-                    <p class="text-gray-500 max-w-md classic-body leading-relaxed mb-8">
-                        The definitive source for global intelligence. Analysis that moves markets and minds. Founded 1924, reborn for the multi-polar world.
+                    <h2 class="serif-headline text-3xl md:text-5xl font-black italic mb-6">CIRCULAR EAGLE</h2>
+                    <p class="text-gray-500 max-w-md classic-body leading-relaxed mb-8 text-sm">
+                        The definitive source for global intelligence. Analysis that moves markets and minds. Reborn for the multi-polar world.
                     </p>
                     <div class="flex gap-6 text-xl">
-                        <a href="#" class="text-gray-500 hover:text-brand-gold transition-colors"><i class="fab fa-x-twitter"></i></a>
-                        <a href="#" class="text-gray-500 hover:text-brand-gold transition-colors"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="text-gray-500 hover:text-brand-gold transition-colors"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" class="text-gray-500 hover:text-brand-gold transition-colors"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-gray-500 hover:text-brand-gold"><i class="fab fa-x-twitter"></i></a>
+                        <a href="#" class="text-gray-500 hover:text-brand-gold"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-500 hover:text-brand-gold"><i class="fab fa-linkedin"></i></a>
                     </div>
                 </div>
                 <div>
-                    <h5 class="label-font text-brand-gold font-bold text-xs uppercase tracking-widest mb-8">Sections</h5>
-                    <ul class="space-y-4 text-sm font-medium text-gray-500">
+                    <h5 class="label-font text-brand-gold font-bold text-xs uppercase tracking-widest mb-6">Sections</h5>
+                    <ul class="space-y-3 text-sm font-medium text-gray-500">
                         <li><a href="#" class="hover:text-white transition">World News</a></li>
                         <li><a href="#" class="hover:text-white transition">Economy</a></li>
                         <li><a href="#" class="hover:text-white transition">Technology</a></li>
-                        <li><a href="#" class="hover:text-white transition">Geopolitics</a></li>
-                        <li><a href="#" class="hover:text-white transition">Science</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h5 class="label-font text-brand-gold font-bold text-xs uppercase tracking-widest mb-8">Intelligence</h5>
-                    <ul class="space-y-4 text-sm font-medium text-gray-500">
+                    <h5 class="label-font text-brand-gold font-bold text-xs uppercase tracking-widest mb-6">Intelligence</h5>
+                    <ul class="space-y-3 text-sm font-medium text-gray-500">
                         <li><a href="#" class="hover:text-white transition">Newsletter</a></li>
-                        <li><a href="#" class="hover:text-white transition">Podcasts</a></li>
                         <li><a href="#" class="hover:text-white transition">Special Reports</a></li>
                         <li><a href="#" class="hover:text-white transition">Secure Tip Line</a></li>
-                        <li><a href="#" class="hover:text-white transition">Advertising</a></li>
                     </ul>
                 </div>
             </div>
             
-            <div class="pt-10 border-t border-white/5 flex flex-col md:row justify-between text-[10px] text-gray-700 label-font font-bold uppercase tracking-widest gap-4">
+            <div class="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between text-[9px] text-gray-600 label-font font-bold uppercase tracking-widest gap-6">
                 <p>&copy; 2025 CIRCULAR EAGLE MEDIA GROUP. ALL RIGHTS RESERVED.</p>
-                <div class="flex gap-6">
-                    <a href="#" class="hover:text-white">Privacy Policy</a>
-                    <a href="#" class="hover:text-white">Terms of Use</a>
-                    <a href="#" class="hover:text-white">Ad Choices</a>
+                <div class="flex flex-wrap gap-4 md:gap-6">
+                    <a href="#" class="hover:text-white">Privacy</a>
+                    <a href="#" class="hover:text-white">Terms</a>
+                    <a href="#" class="hover:text-white">Cookies</a>
                 </div>
             </div>
         </div>
@@ -383,9 +400,16 @@
         closeBtn.addEventListener('click', toggleMenu);
         overlay.addEventListener('click', toggleMenu);
 
-        // Simple marquee scroll effect (CSS-only version can be janky on some mobile)
-        const marquee = document.querySelector('.marquee');
-        // If we wanted to add manual speed control here we could, but CSS animations are preferred.
+        // Handle touch swipes to close menu
+        let touchStartX = 0;
+        mobileMenu.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; }, {passive: true});
+        mobileMenu.addEventListener('touchend', (e) => {
+            const touchEndX = e.changedTouches[0].screenX;
+            if (touchStartX - touchEndX > 50) { // Swipe left
+                toggleMenu();
+            }
+        }, {passive: true});
     </script>
 </body>
 </html>
+
