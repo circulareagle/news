@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Global Intelligence Bureau | Circular Eagle News</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;500;600;700;800;900&family=Oswald:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --brand-navy: #051024;
+            --brand-gold: #B8860B;
+            --news-red: #cc0000;
+            --paper-bg: #fdfcf8;
+            --paper-border: #e9e5d9;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--paper-bg);
+            color: #1a1a1a;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        .serif-headline { font-family: 'Playfair Display', serif; }
+        .classic-body { font-family: 'Libre Baskerville', serif; }
+        .label-font { font-family: 'Oswald', sans-serif; letter-spacing: 0.05em; }
+        .logo-font { font-family: 'Oswald', sans-serif; letter-spacing: -0.02em; text-transform: uppercase; font-weight: 700; }
+
+        .category-pattern-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+            border-bottom: 3px solid var(--brand-navy);
+            padding-bottom: 0.75rem;
+        }
+
+        .data-tape {
+            font-family: monospace;
+            font-size: 10px;
+            color: var(--brand-gold);
+            background: rgba(184, 134, 11, 0.08);
+            padding: 3px 10px;
+            border-radius: 2px;
+            border: 1px solid rgba(184, 134, 11, 0.2);
+        }
+
+        .see-more-bar {
+            border: 2px solid var(--brand-navy);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .see-more-bar:hover {
+            background: var(--brand-navy);
+            color: white;
+            padding-left: 2rem;
+        }
+
+        .img-zoom-container {
+            overflow: hidden;
+            position: relative;
+            background: #eee;
+        }
+        .img-zoom-container img {
+            transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: grayscale(15%);
+        }
+        .img-zoom-container:hover img {
+            transform: scale(1.08);
+            filter: grayscale(0%);
+        }
+
+        #toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--brand-navy);
+            color: white;
+            padding: 1.25rem 2.5rem;
+            border-radius: 2px;
+            z-index: 9999;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            pointer-events: none;
+            width: max-content;
+            max-width: 90vw;
+            text-align: center;
+            border: 1px solid var(--brand-gold);
+        }
+        #toast.visible { transform: translateX(-50%) translateY(0); }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--paper-border), transparent);
+            margin: 4rem 0;
+        }
+
+        .tertiary-card h5 {
+            transition: color 0.3s ease;
+        }
+        .tertiary-card:hover h5 {
+            color: var(--brand-gold);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div id="toast" class="label-font text-xs uppercase tracking-[0.2em] font-bold">Initializing Field Data...</div>
+
+    <!-- REGION STICKY NAV -->
+    <div class="bg-white/95 backdrop-blur-md border-b border-gray-200 py-4 sticky top-0 z-50">
+        <div class="container mx-auto px-4 flex items-center justify-between">
+            <div class="flex items-center gap-8 overflow-x-auto no-scrollbar label-font text-[10px] font-black uppercase tracking-widest">
+                <a href="index.html" class="text-brand-navy hover:text-brand-gold shrink-0 flex items-center gap-2 border-r pr-6 border-gray-200"><i class="fas fa-shield-alt"></i> HQ</a>
+                <a href="#americas" class="hover:text-brand-gold shrink-0">01. AMERICAS</a>
+                <a href="#europe" class="hover:text-brand-gold shrink-0">02. EUROPE</a>
+                <a href="#asia" class="hover:text-brand-gold shrink-0">03. ASIA-PACIFIC</a>
+                <a href="#mideast" class="hover:text-brand-gold shrink-0">04. MIDDLE EAST</a>
+                <a href="#africa" class="hover:text-brand-gold shrink-0">05. AFRICA</a>
+            </div>
+            <div class="hidden lg:flex items-center gap-4">
+                <span class="text-[10px] label-font font-bold text-red-600 animate-pulse"><i class="fas fa-broadcast-tower"></i> LIVE SIGNAL</span>
+                <button class="bg-brand-navy text-white px-5 py-2 text-[9px] label-font font-bold uppercase rounded-sm hover:bg-brand-gold transition-colors">Emergency Dispatch</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- HERO HEADER -->
+    <header class="pt-24 pb-20 bg-brand-navy text-white border-b-4 border-brand-gold relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 pointer-events-none">
+            <div class="grid grid-cols-12 h-full">
+                <div class="border-r border-white/20 h-full"></div><div class="border-r border-white/20 h-full"></div><div class="border-r border-white/20 h-full"></div><div class="border-r border-white/20 h-full"></div><div class="border-r border-white/20 h-full"></div><div class="border-r border-white/20 h-full"></div><div class="border-r border-white/20 h-full"></div><div class="border-r border-white/20 h-full"></div><div class="border-r border-white/20 h-full"></div><div class="border-r border-white/20 h-full"></div><div class="border-r border-white/20 h-full"></div><div class="h-full"></div>
+            </div>
+        </div>
+        <div class="container mx-auto px-4 relative z-10 text-center">
+            <span class="label-font text-brand-gold text-xs font-bold tracking-[0.5em] uppercase mb-6 block">Geopolitical Surveillance Division</span>
+            <h1 class="logo-font text-6xl md:text-9xl mb-8 leading-none">WORLD<br><span class="text-white/20">REPORT</span></h1>
+            <div class="flex justify-center gap-12 mb-8 border-y border-white/10 py-6 max-w-3xl mx-auto">
+                <div class="text-left">
+                    <p class="text-[10px] label-font text-brand-gold uppercase">Active Nodes</p>
+                    <p class="text-xl font-bold">4,192</p>
+                </div>
+                <div class="text-left">
+                    <p class="text-[10px] label-font text-brand-gold uppercase">Signal Status</p>
+                    <p class="text-xl font-bold text-green-400">ENCRYPTED</p>
+                </div>
+                <div class="text-left">
+                    <p class="text-[10px] label-font text-brand-gold uppercase">Last Sync</p>
+                    <p class="text-xl font-bold uppercase">0.2s AGO</p>
+                </div>
+            </div>
+            <p class="classic-body italic text-gray-400 max-w-2xl mx-auto text-base md:text-lg leading-relaxed">
+                "The eyes of the eagle never close. A multi-vector analysis of the shifts defining the 21st-century power structure."
+            </p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-24 space-y-48">
+
+        <!-- 01. AMERICAS SECTOR (8 POSTS) -->
+        <section id="americas">
+            <div class="category-pattern-header">
+                <h2 class="label-font text-3xl font-black uppercase tracking-tighter text-brand-navy">The Americas Sector</h2>
+                <div class="data-tape hidden md:block">LAT: 37.0902° N / LNG: 95.7129° W | UNIT: NORTH-CENTRAL</div>
+                <div class="flex-grow border-t border-brand-navy/10"></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-16">
+                <!-- 1. Feature (Main) -->
+                <div class="lg:col-span-7 group cursor-pointer" onclick="showToast('Loading Deep Analysis: Rust Belt Pivot...')">
+                    <div class="img-zoom-container mb-8 rounded-sm aspect-video">
+                        <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=1200" class="w-full h-full object-cover" alt="Automation">
+                        <div class="absolute top-6 left-6 bg-brand-navy text-white label-font text-[10px] font-bold px-3 py-1.5 uppercase shadow-xl border border-brand-gold/30">Primary Directive</div>
+                    </div>
+                    <h3 class="serif-headline text-4xl md:text-6xl font-bold mb-6 group-hover:text-brand-gold transition-colors leading-tight">The Reshore: U.S. Industry’s Return to the Rust Belt</h3>
+                    <p class="classic-body text-gray-600 text-xl leading-relaxed mb-4">How high-stakes decoupling from global adversaries is forcing a trillion-dollar industrial renaissance in the American Midwest, turning empty factories into automated fortresses.</p>
+                </div>
+
+                <!-- 2-4. Side Briefs -->
+                <div class="lg:col-span-5 flex flex-col justify-between">
+                    <article class="border-b border-gray-100 pb-8 mb-8 group cursor-pointer" onclick="showToast('Intel: Mexico City Node')">
+                        <div class="flex justify-between items-start gap-4">
+                            <div>
+                                <span class="label-font text-brand-gold text-[11px] font-bold uppercase mb-2 block">02. Mexico City</span>
+                                <h4 class="serif-headline text-2xl font-bold group-hover:text-brand-gold">The Nearshoring Bottleneck: Power Grids at the Breaking Point</h4>
+                                <p class="text-sm text-gray-500 mt-2 line-clamp-2">Mexico's infrastructure struggles to match the speed of American capital flight from the East.</p>
+                            </div>
+                            <div class="w-24 h-24 bg-gray-100 shrink-0 overflow-hidden rounded-sm">
+                                <img src="https://images.unsplash.com/photo-1512813195396-6e283a863cc4?q=80&w=300" class="w-full h-full object-cover grayscale" alt="Mexico">
+                            </div>
+                        </div>
+                    </article>
+                    <article class="border-b border-gray-100 pb-8 mb-8 group cursor-pointer" onclick="showToast('Intel: Lithium Triangle')">
+                        <div class="flex justify-between items-start gap-4">
+                            <div>
+                                <span class="label-font text-brand-gold text-[11px] font-bold uppercase mb-2 block">03. Santiago / La Paz</span>
+                                <h4 class="serif-headline text-2xl font-bold group-hover:text-brand-gold">White Gold Wars: The Lithium Triangle’s New Cartels</h4>
+                                <p class="text-sm text-gray-500 mt-2 line-clamp-2">The nationalization of minerals in South America triggers a diplomatic freeze with Western tech giants.</p>
+                            </div>
+                            <div class="w-24 h-24 bg-gray-100 shrink-0 overflow-hidden rounded-sm">
+                                <img src="https://images.unsplash.com/photo-1594819047050-99defca82545?q=80&w=300" class="w-full h-full object-cover grayscale" alt="Lithium">
+                            </div>
+                        </div>
+                    </article>
+                    <article class="group cursor-pointer" onclick="showToast('Intel: Amazon Basin')">
+                        <span class="label-font text-brand-gold text-[11px] font-bold uppercase mb-2 block">04. Amazonia</span>
+                        <h4 class="serif-headline text-2xl font-bold group-hover:text-brand-gold">The Surveillance Canopy: Tracking Illicit Nodes from Space</h4>
+                    </article>
+                </div>
+            </div>
+
+            <!-- 5-8. Tertiary Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 pt-12 border-t border-brand-navy/5">
+                <div class="tertiary-card cursor-pointer" onclick="showToast('Intel: Panama')">
+                    <span class="label-font text-[9px] font-black text-gray-400 uppercase">05. Panama</span>
+                    <h5 class="serif-headline text-lg font-bold mt-2 leading-snug">Drought at the Canal: Global Trade’s Dry Throat</h5>
+                </div>
+                <div class="tertiary-card cursor-pointer" onclick="showToast('Intel: Ottawa')">
+                    <span class="label-font text-[9px] font-black text-gray-400 uppercase">06. Ottawa</span>
+                    <h5 class="serif-headline text-lg font-bold mt-2 leading-snug">The Arctic Pipeline: Canada’s Hidden Strategic Expansion</h5>
+                </div>
+                <div class="tertiary-card cursor-pointer" onclick="showToast('Intel: Brasilia')">
+                    <span class="label-font text-[9px] font-black text-gray-400 uppercase">07. Brasilia</span>
+                    <h5 class="serif-headline text-lg font-bold mt-2 leading-snug">BRICS Expansion: Brazil Navigates the Bipolar World</h5>
+                </div>
+                <div class="tertiary-card cursor-pointer" onclick="showToast('Intel: Buenos Aires')">
+                    <span class="label-font text-[9px] font-black text-gray-400 uppercase">08. Buenos Aires</span>
+                    <h5 class="serif-headline text-lg font-bold mt-2 leading-snug">The Shock Doctrine: Argentina’s Economic Laboratory</h5>
+                </div>
+            </div>
+
+            <div class="mt-12 see-more-bar p-5 text-center label-font text-[11px] font-black uppercase tracking-[0.3em] flex items-center justify-center gap-4">
+                Access Americas Sector Archives <i class="fas fa-arrow-right text-[10px]"></i>
+            </div>
+        </section>
+
+        <!-- 02. EUROPE SECTOR (8 POSTS) -->
+        <section id="europe">
+            <div class="category-pattern-header">
+                <h2 class="label-font text-3xl font-black uppercase tracking-tighter text-brand-navy">Europe Sector</h2>
+                <div class="data-tape hidden md:block">EU-SEC: 54.5260° N / 15.2551° E | STATUS: ALERT</div>
+                <div class="flex-grow border-t border-brand-navy/10"></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-16">
+                <!-- 1. Feature -->
+                <div class="lg:col-span-7 lg:order-2 group cursor-pointer" onclick="showToast('Loading Brussels Intel...')">
+                    <div class="img-zoom-container mb-8 rounded-sm aspect-video">
+                        <img src="https://images.unsplash.com/photo-1549421263-5ec394a5ad4c?q=80&w=1200" class="w-full h-full object-cover" alt="Brussels">
+                        <div class="absolute top-6 right-6 bg-red-700 text-white label-font text-[10px] font-bold px-3 py-1.5 uppercase">Critical Analysis</div>
+                    </div>
+                    <h3 class="serif-headline text-4xl md:text-6xl font-bold mb-6 group-hover:text-brand-gold transition-colors leading-tight">Fortress Europe: The Walls of Economic Sovereignty</h3>
+                    <p class="classic-body text-gray-600 text-xl leading-relaxed mb-4">Brussels redefines the single market not as a trade zone, but as a defensive perimeter against tech-monopolies and energy coercion.</p>
+                </div>
+
+                <!-- 2-4. Briefs -->
+                <div class="lg:col-span-5 lg:order-1 flex flex-col justify-between">
+                    <article class="border-b border-gray-100 pb-8 mb-8 group cursor-pointer" onclick="showToast('Intel: Warsaw')">
+                        <span class="label-font text-brand-gold text-[11px] font-bold uppercase mb-2 block">02. Warsaw</span>
+                        <h4 class="serif-headline text-2xl font-bold group-hover:text-brand-gold">The Vistula Vanguard: Poland Becomes Europe’s Military Pivot</h4>
+                        <p class="text-sm text-gray-500 mt-2">A look at the massive defense contracts turning Poland into the continent's ground-force powerhouse.</p>
+                    </article>
+                    <article class="border-b border-gray-100 pb-8 mb-8 group cursor-pointer" onclick="showToast('Intel: Paris')">
+                        <span class="label-font text-brand-gold text-[11px] font-bold uppercase mb-2 block">03. Paris</span>
+                        <h4 class="serif-headline text-2xl font-bold group-hover:text-brand-gold">Atomic Grandeur: France’s Nuclear Export Offensive</h4>
+                    </article>
+                    <article class="group cursor-pointer" onclick="showToast('Intel: Berlin')">
+                        <span class="label-font text-brand-gold text-[11px] font-bold uppercase mb-2 block">04. Berlin</span>
+                        <h4 class="serif-headline text-2xl font-bold group-hover:text-brand-gold">The Industrial Ghost: Germany’s Struggle with Post-Gas Production</h4>
+                    </article>
+                </div>
+            </div>
+
+            <!-- 5-8. Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 pt-12 border-t border-brand-navy/5">
+                <div class="tertiary-card cursor-pointer" onclick="showToast('Intel: Rome')">
+                    <span class="label-font text-[9px] font-black text-gray-400 uppercase">05. Rome</span>
+                    <h5 class="serif-headline text-lg font-bold mt-2 leading-snug">Mediterranean Shield: Italy’s Navy and the Libyan Question</h5>
+                </div>
+                <div class="tertiary-card cursor-pointer" onclick="showToast('Intel: London')">
+                    <span class="label-font text-[9px] font-black text-gray-400 uppercase">06. London</span>
+                    <h5 class="serif-headline text-lg font-bold mt-2 leading-snug">City of Secrets: London’s Financial Intelligence Pivot</h5>
+                </div>
+                <div class="tertiary-card cursor-pointer" onclick="showToast('Intel: Helsinki')">
+                    <span class="label-font text-[9px] font-black text-gray-400 uppercase">07. Helsinki</span>
+                    <h5 class="serif-headline text-lg font-bold mt-2 leading-snug">The Frozen Watch: NATO’s New Northern Perimeter</h5>
+                </div>
+                <div class="tertiary-card cursor-pointer" onclick="showToast('Intel: Kyiv')">
+                    <span class="label-font text-[9px] font-black text-gray-400 uppercase">08. Kyiv</span>
+                    <h5 class="serif-headline text-lg font-bold mt-2 leading-snug">Reconstruction Bonds: The Trillion-Dollar Bet on Future Peace</h5>
+                </div>
+            </div>
+
+            <div class="mt-12 see-more-bar p-5 text-center label-font text-[11px] font-black uppercase tracking-[0.3em] flex items-center justify-center gap-4">
+                Decrypt European Intelligence Archives <i class="fas fa-arrow-right text-[10px]"></i>
+            </div>
+        </section>
+
+        <!-- 03. ASIA-PACIFIC SECTOR (8 POSTS) -->
+        <section id="asia">
+            <div class="category-pattern-header">
+                <h2 class="label-font text-3xl font-black uppercase tracking-tighter text-brand-navy">Asia-Pacific Sector</h2>
+                <div class="data-tape hidden md:block">APAC-NODES: 34.0479° N / 100.6197° E | SIGINT ACTIVE</div>
+                <div class="flex-grow border-t border-brand-navy/10"></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-16">
+                <!-- 1. Feature -->
+                <div class="lg:col-span-7 group cursor-pointer" onclick="showToast('Loading APAC Strategic Analysis...')">
+                    <div class="img-zoom-container mb-8 rounded-sm aspect-video">
+                        <img src="https://images.unsplash.com/photo-1518391846015-55a9cc003b25?q=80&w=1200" class="w-full h-full object-cover" alt="Tokyo">
+                        <div class="absolute bottom-6 left-6 bg-brand-gold text-white label-font text-[10px] font-bold px-3 py-1.5 uppercase">Signal Analysis</div>
+                    </div>
+                    <h3 class="serif-headline text-4xl md:text-6xl font-bold mb-6 group-hover:text-brand-gold transition-colors leading-tight">The Pacific Perimeter: Island Hopping 2.0</h3>
+                    <p class="classic-body text-gray-600 text-xl leading-relaxed mb-4">Navigating the high-tension waters where the world's most critical maritime lanes are being militarized at a pace unseen since 1941.</p>
+                </div>
+
+                <!-- 2-4. Briefs -->
+                <div class="lg:col-span-5 flex flex-col justify-between">
+                    <article class="border-b border-gray-100 pb-8 mb-8 group cursor-pointer" onclick="showToast('Intel: Taipei')">
+                        <span class="label-font text-brand-gold text-[11px] font-bold uppercase mb-2 block">02. Taipei</span>
+                        <h4 class="serif-headline text-2xl font-bold group-hover:text-brand-gold">The Silicon Shield: Inside the TSMC Deep-Earth Bunker</h4>
+                        <p class="text-sm text-gray-500 mt-2">A secret look at the world's most guarded production lines and the geopolitical weight they carry.</p>
+                    </article>
+                    <article class="border-b border-gray-100 pb-8 mb-8 group cursor-pointer" onclick="showToast('Intel: Tokyo')">
+                        <span class="label-font text-brand-gold text-[11px] font-bold uppercase mb-2 block">03. Tokyo</span>
+                        <h4 class="serif-headline text-2xl font-bold group-hover:text-brand-gold">The Yen Rebound: Japan’s Return to Regional Finance Hegemony</h4>
+                    </article>
+                    <article class="group cursor-pointer" onclick="showToast('Intel: Manila')">
+                        <span class="label-font text-brand-gold text-[11px] font-bold uppercase mb-2 block">04. Manila</span>
+                        <h4 class="serif-headline text-2xl font-bold group-hover:text-brand-gold">The Reef Standoff: Philippines Expands Exclusive Zone Defense</h4>
+                    </article>
+                </div>
+            </div>
+
+            <!-- 5-8. Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 pt-12 border-t border-brand-navy/5">
+                <div class="tertiary-card cursor-pointer" onclick="showToast('Intel: Seoul')">
+                    <span class="label-font text-[9px] font-black text-gray-400 uppercase">05. Seoul</span>
+                    <h5 class="serif-headline text-lg font-bold mt-2 leading-snug">K-Defense: South Korea’s Bid to Arm the Global South</h5>
+                </div>
+                <div class="tertiary-card cursor-pointer" onclick="showToast('Intel: New Delhi')">
+                    <span class="label-font text-[9px] font-black text-gray-400 uppercase">06. New Delhi</span>
+                    <h5 class="serif-headline text-lg font-bold mt-2 leading-snug">The Third Way: India’s Strategic Non-Alignment Policy 2.0</h5>
+                </div>
+                <div class="tertiary-card cursor-pointer" onclick="showToast('Intel: Canberra')">
+                    <span class="label-font text-[9px] font-black text-gray-400 uppercase">07. Canberra</span>
+                    <h5 class="serif-headline text-lg font-bold mt-2 leading-snug">AUKUS Phase II: Underwater Drone Swarms in the Coral Sea</h5>
+                </div>
+                <div class="tertiary-card cursor-pointer" onclick="showToast('Intel: Jakarta')">
+                    <span class="label-font text-[9px] font-black text-gray-400 uppercase">08. Jakarta</span>
+                    <h5 class="serif-headline text-lg font-bold mt-2 leading-snug">The Nickel Cartel: Indonesia Leads the OPEC of Minerals</h5>
+                </div>
+            </div>
+
+            <div class="mt-12 see-more-bar p-5 text-center label-font text-[11px] font-black uppercase tracking-[0.3em] flex items-center justify-center gap-4">
+                Open Asia-Pacific Threat Map <i class="fas fa-arrow-right text-[10px]"></i>
+            </div>
+        </section>
+
+        <!-- 04. MIDDLE EAST SECTOR (8 POSTS) -->
+        <section id="mideast">
+            <div class="category-pattern-header">
+                <h2 class="label-font text-3xl font-black uppercase tracking-tighter text-brand-navy">Middle East Sector</h2>
+                <div class="data-tape hidden md:block">MIDEAST-CORE: 29.3117° N / 47.4818° E | ENCRYPTED LINK</div>
+                <div class="flex-grow border-t border-brand-navy/10"></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-16">
+                <!-- 1. Feature -->
+                <div class="lg:col-span-7 lg:order-2 group cursor-pointer" onclick="showToast('Loading Riyadh Intel...')">
+                    <div class="img-zoom-container mb-8 rounded-sm aspect-video">
+                        <img src="https://images.unsplash.com/photo-1548013146-72479768bada?q=80&w=1200" class="w-full h-full object-cover" alt="Riyadh">
+                        <div class="absolute top-6 right-6 bg-brand-navy text-white label-font text-[10px] font-bold px-3 py-1.5 uppercase">Geo-Strategy</div>
+                    </div>
+                    <h3 class="serif-headline text-4xl md:text-6xl font-bold mb-6 group-hover:text-brand-gold transition-colors leading-tight">Vision 2030: The Petrodollar’s Final Act</h3>
+                    <p class="classic-body text-gray-600 text-xl leading-relaxed mb-4">Inside the kingdom's pivot from crude oil to AI data centers, as Riyadh positions itself as the digital bridge between East and West.</p>
+                </div>
+
+                <!-- 2-4. Briefs -->
+                <div class="lg:col-span-5 lg:order-1 flex flex-col justify-between">
+                    <article class="border-b border-gray-100 pb-8 mb-8 group cursor-pointer" onclick="showToast('Intel: Tel Aviv')">
+                        <span class="label-font text-brand-gold text-[11px] font-bold uppercase mb-2 block">02. Tel Aviv</span>
+                        <h4 class="serif-headline text-2xl font-bold group-hover:text-brand-gold">Cyber-Iron Dome: Protecting the Financial Backbone</h4>
+                        <p class="text-sm text-gray-500 mt-2">How Israel's tech sector is pivoting to defensive AI to counter state-sponsored network incursions.</p>
+                    </article>
+                    <article class="border-b border-gray-100 pb-8 mb-8 group cursor-pointer" onclick="showToast('Intel: Doha')">
+                        <span class="label-font text-brand-gold text-[11px] font-bold uppercase mb-2 block">03. Doha</span>
+                        <h4 class="serif-headline text-2xl font-bold group-hover:text-brand-gold">The LNG Kingmaker: Qatar’s Quiet Control of European Heat</h4>
+                    </article>
+                    <article class="group cursor-pointer" onclick="showToast('Intel: Abu Dhabi')">
+                        <span class="label-font text-brand-gold text-[11px] font-bold uppercase mb-2 block">04. Abu Dhabi</span>
+                        <h4 class="serif-headline text-2xl font-bold group-hover:text-brand-gold">Global South Hub: UAE as the Neutral Ground for Sanctioned Trade</h4>
+                    </article>
+                </div>
+            </div>
+
+            <!-- 5-8. Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 pt-12 border-t border-brand-navy/5">
+                <div class="tertiary-card cursor-pointer" onclick="showToast('Intel: Tehran')">
+                    <span class="label-font text-[9px] font-black text-gray-400 uppercase">05. Tehran</span>
+                    <h5 class="serif-headline text-lg font-bold mt-2 leading-snug">Drone Diplomacy: The Export of Low-Cost Conflict</h5>
+                </div>
+                <div class="tertiary-card cursor-pointer" onclick="showToast('Intel: Cairo')">
+                    <span class="label-font text-[9px] font-black text-gray-400 uppercase">06. Cairo</span>
+                    <h5 class="serif-headline text-lg font-bold mt-2 leading-snug">The Suez Squeeze: Egypt’s Struggle with Red Sea Risks</h5>
+                </div>
+                <div class="tertiary-card cursor-pointer" onclick="showToast('Intel: Muscat')">
+                    <span class="label-font text-[9px] font-black text-gray-400 uppercase">07. Muscat</span>
+                    <h5 class="serif-headline text-lg font-bold mt-2 leading-snug">The Mediator: Oman’s Silent Backchannel Successes</h5>
+                </div>
+                <div class="tertiary-card cursor-pointer" onclick="showToast('Intel: Baghdad')">
+                    <span class="label-font text-[9px] font-black text-gray-400 uppercase">08. Baghdad</span>
+                    <h5 class="serif-headline text-lg font-bold mt-2 leading-snug">The Transit Route: Iraq’s Grand Port Vision for 2030</h5>
+                </div>
+            </div>
+
+            <div class="mt-12 see-more-bar p-5 text-center label-font text-[11px] font-black uppercase tracking-[0.3em] flex items-center justify-center gap-4">
+                View Middle East Sector Dossiers <i class="fas fa-arrow-right text-[10px]"></i>
+            </div>
+        </section>
+
+        <!-- 05. AFRICA SECTOR (8 POSTS) -->
+        <section id="africa">
+            <div class="category-pattern-header">
+                <h2 class="label-font text-3xl font-black uppercase tracking-tighter text-brand-navy">Africa Sector</h2>
+                <div class="data-tape hidden md:block">AFR-SURV: 1.2921° N / 36.8219° E | DATA-RELAY ON</div>
+                <div class="flex-grow border-t border-brand-navy/10"></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-16">
+                <!-- 1. Feature -->
+                <div class="lg:col-span-7 group cursor-pointer" onclick="showToast('Loading Africa Intel...')">
+                    <div class="img-zoom-container mb-8 rounded-sm aspect-video">
+                        <img src="https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?q=80&w=1200" class="w-full h-full object-cover" alt="Kenya">
+                        <div class="absolute top-6 left-6 bg-brand-navy text-white label-font text-[10px] font-bold px-3 py-1.5 uppercase shadow-xl">Emerging Markets</div>
+                    </div>
+                    <h3 class="serif-headline text-4xl md:text-6xl font-bold mb-6 group-hover:text-brand-gold transition-colors leading-tight">The African Union’s Single Market: A Sleeping Giant</h3>
+                    <p class="classic-body text-gray-600 text-xl leading-relaxed mb-4">Analyzing the legal and infrastructure hurdles as the continent attempts to create the world's largest free trade area.</p>
+                </div>
+
+                <!-- 2-4. Briefs -->
+                <div class="lg:col-span-5 flex flex-col justify-between">
+                    <article class="border-b border-gray-100 pb-8 mb-8 group cursor-pointer" onclick="showToast('Intel: Nairobi')">
+                        <span class="label-font text-brand-gold text-[11px] font-bold uppercase mb-2 block">02. Nairobi</span>
+                        <h4 class="serif-headline text-2xl font-bold group-hover:text-brand-gold">The Silicon Savannah: Kenya’s FinTech Supremacy</h4>
+                        <p class="text-sm text-gray-500 mt-2">How mobile money is bypassing traditional banking to create a unique economic ecosystem in East Africa.</p>
+                    </article>
+                    <article class="border-b border-gray-100 pb-8 mb-8 group cursor-pointer" onclick="showToast('Intel: Lagos')">
+                        <span class="label-font text-brand-gold text-[11px] font-bold uppercase mb-2 block">03. Lagos</span>
+                        <h4 class="serif-headline text-2xl font-bold group-hover:text-brand-gold">Megacity Governance: Managing 25 Million People in the 21st Century</h4>
+                    </article>
+                    <article class="group cursor-pointer" onclick="showToast('Intel: Kinshasa')">
+                        <span class="label-font text-brand-gold text-[11px] font-bold uppercase mb-2 block">04. Kinshasa</span>
+                        <h4 class="serif-headline text-2xl font-bold group-hover:text-brand-gold">Cobalt Sovereignty: The DRC Re-Negotiates Mining Rights</h4>
+                    </article>
+                </div>
+            </div>
+
+            <!-- 5-8. Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 pt-12 border-t border-brand-navy/5">
+                <div class="tertiary-card cursor-pointer" onclick="showToast('Intel: Addis Ababa')">
+                    <span class="label-font text-[9px] font-black text-gray-400 uppercase">05. Addis Ababa</span>
+                    <h5 class="serif-headline text-lg font-bold mt-2 leading-snug">The Renaissance Dam: Power Struggles on the Nile</h5>
+                </div>
+                <div class="tertiary-card cursor-pointer" onclick="showToast('Intel: Johannesburg')">
+                    <span class="label-font text-[9px] font-black text-gray-400 uppercase">06. Johannesburg</span>
+                    <h5 class="serif-headline text-lg font-bold mt-2 leading-snug">Energy Transition: South Africa’s Battle for a Just Coal-Exit</h5>
+                </div>
+                <div class="tertiary-card cursor-pointer" onclick="showToast('Intel: Rabat')">
+                    <span class="label-font text-[9px] font-black text-gray-400 uppercase">07. Rabat</span>
+                    <h5 class="serif-headline text-lg font-bold mt-2 leading-snug">Green Hydrogen: Morocco’s Plan to Power the EU</h5>
+                </div>
+                <div class="tertiary-card cursor-pointer" onclick="showToast('Intel: Luanda')">
+                    <span class="label-font text-[9px] font-black text-gray-400 uppercase">08. Luanda</span>
+                    <h5 class="serif-headline text-lg font-bold mt-2 leading-snug">Angola’s Pivot: Moving Beyond the Oil Curse</h5>
+                </div>
+            </div>
+
+            <div class="mt-12 see-more-bar p-5 text-center label-font text-[11px] font-black uppercase tracking-[0.3em] flex items-center justify-center gap-4">
+                Access Africa Intelligence Briefings <i class="fas fa-arrow-right text-[10px]"></i>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-[#051024] text-white pt-24 pb-12 border-t-4 border-brand-gold">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16 border-b border-white/10 pb-16">
+                <div class="md:col-span-2">
+                    <h2 class="logo-font text-4xl mb-6">CIRCULAR EAGLE NEWS</h2>
+                    <p class="classic-body text-gray-400 text-sm italic max-w-sm">A global intelligence bureau providing asymmetric analysis of the world's most critical shifts.</p>
+                </div>
+                <div>
+                    <h3 class="label-font text-brand-gold text-xs font-bold mb-6">BUREAUS</h3>
+                    <ul class="space-y-3 label-font text-[10px] font-bold uppercase tracking-widest text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Americas Sector</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">European Command</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Asia-Pacific Node</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Global Map Intel</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="label-font text-brand-gold text-xs font-bold mb-6">ACCESS</h3>
+                    <ul class="space-y-3 label-font text-[10px] font-bold uppercase tracking-widest text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Secure Login</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Field Reports</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Dossier Access</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">API Keys</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="flex flex-col md:flex-row justify-between items-center gap-8">
+                <p class="text-[10px] text-gray-600 label-font uppercase tracking-[0.4em]">© 2025 World Intelligence Division | CEN MEDIA GROUP</p>
+                <div class="flex gap-6 text-gray-500">
+                    <i class="fab fa-twitter hover:text-white cursor-pointer"></i>
+                    <i class="fab fa-linkedin hover:text-white cursor-pointer"></i>
+                    <i class="fas fa-satellite hover:text-white cursor-pointer"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const toast = document.getElementById('toast');
+
+        function showToast(message) {
+            toast.textContent = message;
+            toast.classList.add('visible');
+            setTimeout(() => {
+                toast.classList.remove('visible');
+            }, 3500);
+        }
+
+        // Initialize Section Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const targetId = this.getAttribute('href');
+                const target = document.querySelector(targetId);
+                if (target) {
+                    e.preventDefault();
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // "See More" Animation logic
+        document.querySelectorAll('.see-more-bar').forEach(bar => {
+            bar.addEventListener('click', function() {
+                const region = this.parentElement.id || "Current";
+                showToast(`Requesting encrypted logs for ${region.toUpperCase()} sector...`);
+            });
+        });
+
+        // Reveal on scroll logic for better page flow
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100');
+                    entry.target.classList.remove('opacity-0', 'translate-y-10');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            section.classList.add('transition-all', 'duration-1000', 'opacity-0', 'translate-y-10');
+            observer.observe(section);
+        });
+
+        window.onload = () => {
+            showToast("System Online. Synchronizing World Intelligence Bureau...");
+        };
+    </script>
+</body>
+</html>
