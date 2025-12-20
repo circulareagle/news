@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>Circular Eagle News | World Intelligence & Global Breaking News</title>
     
-    <!-- External Assets -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
@@ -32,16 +31,8 @@
         .label-font { font-family: 'Oswald', sans-serif; letter-spacing: 0.05em; }
         .logo-font { font-family: 'Oswald', sans-serif; letter-spacing: -0.02em; text-transform: uppercase; font-weight: 700; }
 
-        /* Mobile specific fixes for the longer "NEWS" title */
         @media (max-width: 768px) {
-            .mobile-header-text { 
-                font-size: 1.5rem !important; 
-                white-space: nowrap;
-                letter-spacing: -0.01em;
-            }
-            .header-content {
-                gap: 0.25rem !important;
-            }
+            .mobile-header-text { font-size: 1.5rem !important; white-space: nowrap; }
             .header-tagline { font-size: 7px !important; }
         }
 
@@ -60,14 +51,7 @@
             animation: pulse 2s infinite;
         }
 
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.7; }
-            100% { opacity: 1; }
-        }
-
-        .news-stack-item { border-bottom: 1px solid var(--paper-border); padding-bottom: 1rem; margin-bottom: 1rem; }
-        .news-stack-item:last-child { border: none; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
 
         .sticky-header {
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
@@ -75,49 +59,95 @@
             backdrop-filter: blur(8px);
         }
 
-        .marquee-container {
-            width: 100%;
-            overflow: hidden;
-            white-space: nowrap;
-        }
+        .marquee-container { width: 100%; overflow: hidden; white-space: nowrap; }
         .marquee-content {
             display: inline-block;
             padding-left: 100%;
-            animation: marquee 30s linear infinite;
+            animation: marquee 40s linear infinite;
         }
-        @keyframes marquee {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(-100%, 0); }
-        }
+        @keyframes marquee { 0% { transform: translate(0, 0); } 100% { transform: translate(-200%, 0); } }
 
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        /* Custom Notification */
+        #toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--brand-navy);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 4px;
+            z-index: 9999;
+            transition: transform 0.3s ease;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            pointer-events: none;
+        }
+        #toast.visible { transform: translateX(-50%) translateY(0); }
+
+        /* Search Overlay Styles */
+        #search-overlay {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        #search-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
     </style>
 </head>
 <body class="antialiased">
+
+    <!-- NOTIFICATION SYSTEM -->
+    <div id="toast" class="label-font text-sm uppercase tracking-widest font-bold">Action Confirmed</div>
+
+    <!-- SEARCH OVERLAY (Functional Search) -->
+    <div id="search-overlay" class="fixed inset-0 bg-white/98 z-[100] flex-col p-6 overflow-y-auto">
+        <div class="max-w-4xl mx-auto w-full pt-12">
+            <div class="flex justify-between items-center mb-12">
+                <h2 class="logo-font text-3xl text-brand-navy">Search Intelligence</h2>
+                <button id="close-search" class="text-3xl text-brand-navy hover:text-brand-gold"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="relative mb-8">
+                <input type="text" id="search-input" placeholder="Type to search world news..." class="w-full text-3xl md:text-5xl border-b-2 border-brand-navy py-4 outline-none serif-headline bg-transparent placeholder:text-gray-200 focus:border-brand-gold transition-colors">
+                <i class="fas fa-search absolute right-4 top-1/2 -translate-y-1/2 text-3xl text-gray-300"></i>
+            </div>
+            <div id="search-results-container" class="space-y-6 pb-20">
+                <!-- Results populate here -->
+                <p class="label-font text-gray-400 uppercase text-center py-20 tracking-widest">Start typing to scan global database</p>
+            </div>
+        </div>
+    </div>
 
     <!-- MOBILE NAVIGATION OVERLAY -->
     <div id="mobile-overlay" class="fixed inset-0 bg-black/70 z-[60] hidden transition-opacity duration-300"></div>
     <nav id="mobile-menu" class="fixed top-0 left-0 h-full w-[85%] max-w-sm bg-[#051024] text-white z-[70] p-6 shadow-2xl overflow-y-auto">
         <div class="flex justify-between items-center mb-10">
             <h2 class="label-font font-bold text-lg text-brand-gold italic">CEN SECTIONS</h2>
-            <button id="close-menu" class="text-2xl p-2 w-10 h-10 flex items-center justify-center bg-white/10 rounded-full"><i class="fas fa-times"></i></button>
+            <button id="close-menu" class="text-2xl p-2 w-10 h-10 flex items-center justify-center bg-white/10 rounded-full hover:bg-white/20 transition-colors"><i class="fas fa-times"></i></button>
         </div>
         <ul class="space-y-4 label-font text-lg tracking-wide">
-            <li><a href="#" class="block py-3 border-b border-white/10 hover:text-brand-gold transition flex justify-between items-center">WORLD <span><i class="fas fa-chevron-right text-xs opacity-30"></i></span></a></li>
-            <li><a href="#" class="block py-3 border-b border-white/10 hover:text-brand-gold transition flex justify-between items-center">POLITICS <span><i class="fas fa-chevron-right text-xs opacity-30"></i></span></a></li>
-            <li><a href="#" class="block py-3 border-b border-white/10 hover:text-brand-gold transition flex justify-between items-center">BUSINESS <span><i class="fas fa-chevron-right text-xs opacity-30"></i></span></a></li>
-            <li><a href="#" class="block py-3 border-b border-white/10 hover:text-brand-gold transition flex justify-between items-center">TECH <span><i class="fas fa-chevron-right text-xs opacity-30"></i></span></a></li>
-            <li><a href="#" class="block py-3 border-b border-white/10 hover:text-brand-gold transition flex justify-between items-center">SCIENCE <span><i class="fas fa-chevron-right text-xs opacity-30"></i></span></a></li>
-            <li><a href="#" class="block py-3 border-b border-white/10 hover:text-brand-gold transition flex justify-between items-center">OPINION <span><i class="fas fa-chevron-right text-xs opacity-30"></i></span></a></li>
-            <li class="pt-6"><a href="#" class="text-red-500 font-bold flex items-center gap-3"><span class="w-3 h-3 bg-red-500 rounded-full animate-ping"></span> LIVE TV</a></li>
+            <li><a href="#" class="nav-link block py-3 border-b border-white/10 hover:text-brand-gold transition flex justify-between items-center">WORLD <span><i class="fas fa-chevron-right text-xs opacity-30"></i></span></a></li>
+            <li><a href="#" class="nav-link block py-3 border-b border-white/10 hover:text-brand-gold transition flex justify-between items-center">POLITICS <span><i class="fas fa-chevron-right text-xs opacity-30"></i></span></a></li>
+            <li><a href="#" class="nav-link block py-3 border-b border-white/10 hover:text-brand-gold transition flex justify-between items-center">BUSINESS <span><i class="fas fa-chevron-right text-xs opacity-30"></i></span></a></li>
+            <li><a href="#" class="nav-link block py-3 border-b border-white/10 hover:text-brand-gold transition flex justify-between items-center">TECH <span><i class="fas fa-chevron-right text-xs opacity-30"></i></span></a></li>
+            <li><a href="#" class="nav-link block py-3 border-b border-white/10 hover:text-brand-gold transition flex justify-between items-center">SCIENCE <span><i class="fas fa-chevron-right text-xs opacity-30"></i></span></a></li>
+            <li class="pt-6"><a href="#" class="nav-link text-red-500 font-bold flex items-center gap-3"><span class="w-3 h-3 bg-red-500 rounded-full animate-ping"></span> LIVE TV</a></li>
         </ul>
+        
+        <!-- FUNCTIONAL ON-PAGE SUBSCRIPTION FORM -->
         <div class="mt-12 pt-6 border-t border-white/10">
-            <button class="w-full bg-brand-gold py-4 text-sm font-bold tracking-widest label-font uppercase mb-4">Subscribe Now</button>
-            <div class="flex justify-center gap-6 text-xl text-white/50">
-                <i class="fab fa-x-twitter"></i>
-                <i class="fab fa-instagram"></i>
-                <i class="fab fa-linkedin"></i>
+            <h3 class="label-font text-brand-gold text-xs font-bold uppercase tracking-widest mb-4">Newsletter Access</h3>
+            <form id="mobile-subscribe-form" class="space-y-3">
+                <div class="relative">
+                    <input type="email" required placeholder="Email address" class="w-full bg-white/5 border border-white/10 px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-gold rounded-sm transition-colors">
+                </div>
+                <button type="submit" class="w-full bg-brand-gold py-4 text-sm font-bold tracking-widest label-font uppercase hover:bg-white hover:text-brand-navy transition-all">Join Intelligence</button>
+            </form>
+            <div class="flex justify-center gap-8 text-2xl text-white/50 mt-10">
+                <a href="#" class="social-link hover:text-brand-gold transition-colors"><i class="fab fa-x-twitter"></i></a>
+                <a href="#" class="social-link hover:text-brand-gold transition-colors"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="social-link hover:text-brand-gold transition-colors"><i class="fab fa-linkedin"></i></a>
             </div>
         </div>
     </nav>
@@ -128,7 +158,7 @@
             <span class="breaking-tag px-2 py-0.5 text-[9px] font-black label-font uppercase mr-3 shrink-0 rounded-sm">Breaking</span>
             <div class="marquee-container text-[11px] label-font tracking-wide">
                 <div class="marquee-content">
-                    <a href="#" class="hover:text-brand-gold uppercase">Circular Eagle News: Global Markets React to Sudden Central Bank Interest Rate Hike — UN Security Council Convenes Over Arctic Territorial Dispute — Silicon Valley bracing for "The Great Regulation".</a>
+                    <a href="#" class="nav-link hover:text-brand-gold uppercase">Circular Eagle News: Global Markets React to Sudden Central Bank Interest Rate Hike — UN Security Council Convenes Over Arctic Territorial Dispute — Silicon Valley bracing for "The Great Regulation".</a>
                 </div>
             </div>
         </div>
@@ -138,24 +168,20 @@
     <header class="sticky-header border-b premium-border sticky top-0 z-50">
         <div class="container mx-auto px-4 py-3 md:py-5">
             <div class="flex items-center justify-between header-content relative">
-                
-                <!-- Left: Burger -->
                 <div class="flex-1 flex items-center">
                     <button id="burger-btn" class="w-10 h-10 flex items-center justify-center text-xl md:text-2xl hover:text-brand-gold transition-all" aria-label="Menu">
                         <i class="fas fa-bars"></i>
                     </button>
-                    <!-- Desktop Nav -->
                     <nav class="hidden xl:flex items-center ml-8 gap-6 label-font text-[10px] font-bold uppercase tracking-widest text-brand-navy">
-                        <a href="#" class="hover:text-brand-gold">World</a>
-                        <a href="#" class="hover:text-brand-gold">Business</a>
-                        <a href="#" class="hover:text-brand-gold">Tech</a>
-                        <a href="#" class="hover:text-brand-gold">Science</a>
+                        <a href="#" class="nav-link hover:text-brand-gold">World</a>
+                        <a href="#" class="nav-link hover:text-brand-gold">Business</a>
+                        <a href="#" class="nav-link hover:text-brand-gold">Tech</a>
+                        <a href="#" class="nav-link hover:text-brand-gold">Science</a>
                     </nav>
                 </div>
 
-                <!-- Center: Logo -->
                 <div class="flex-shrink-0 text-center px-2">
-                    <a href="/" class="group block">
+                    <a href="#" class="group block">
                         <h1 class="logo-font mobile-header-text text-2xl md:text-4xl lg:text-5xl text-brand-navy group-hover:text-black transition-colors">
                             CIRCULAR EAGLE NEWS
                         </h1>
@@ -163,12 +189,12 @@
                     </a>
                 </div>
 
-                <!-- Right: Buttons -->
                 <div class="flex-1 flex justify-end items-center gap-2 md:gap-3">
-                    <button class="hidden md:flex items-center gap-2 label-font text-[10px] font-bold hover:text-brand-gold pr-4">
-                        <i class="fas fa-search"></i>
+                    <button id="search-trigger" class="w-10 h-10 flex items-center justify-center label-font text-[10px] font-bold hover:text-brand-gold">
+                        <i class="fas fa-search text-lg"></i>
                     </button>
-                    <button class="bg-[#8B0000] text-white px-2.5 md:px-6 py-1.5 md:py-2 text-[8px] md:text-[10px] font-bold label-font hover:bg-black transition-all shadow-md rounded-sm">JOIN</button>
+                    <!-- On-page prompt for Join -->
+                    <button onclick="showToast('Join interface loaded. Please enter credentials below.')" class="bg-[#8B0000] text-white px-4 md:px-6 py-1.5 md:py-2 text-[8px] md:text-[10px] font-bold label-font hover:bg-black transition-all shadow-md rounded-sm uppercase tracking-widest">Join</button>
                 </div>
             </div>
         </div>
@@ -178,17 +204,14 @@
         
         <!-- 3. BILLBOARD HERO SECTION -->
         <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-12">
-            
-            <div class="lg:col-span-8 group relative overflow-hidden rounded-md shadow-xl bg-black h-[400px] md:h-[500px] lg:h-[600px] cursor-pointer">
+            <div id="article-decoupling" class="searchable lg:col-span-8 group relative overflow-hidden rounded-md shadow-xl bg-black h-[400px] md:h-[500px] lg:h-[600px] cursor-pointer" onclick="showToast('Accessing Secure Dossier...')">
                 <img src="https://images.unsplash.com/photo-1451187534963-56586ee143b6?q=80&w=1800" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 opacity-70" alt="Global connectivity">
                 <div class="absolute inset-0 billboard-gradient flex flex-col justify-end p-6 md:p-12">
                     <span class="bg-red-700 text-white label-font text-[9px] font-bold px-2 py-0.5 uppercase tracking-widest self-start mb-4">Special Intelligence</span>
-                    <a href="#">
-                        <h2 class="serif-headline text-2xl md:text-5xl lg:text-6xl text-white font-black leading-[1.15] mb-4 group-hover:text-brand-gold transition-colors">
-                            The Great Decoupling: How The World Is Splitting In Two
-                        </h2>
-                    </a>
-                    <p class="text-white/80 text-sm md:text-lg classic-body leading-relaxed max-w-2xl mb-6 line-clamp-3 md:line-clamp-none">
+                    <h2 class="article-title serif-headline text-2xl md:text-5xl lg:text-6xl text-white font-black leading-[1.15] mb-4 group-hover:text-brand-gold transition-colors">
+                        The Great Decoupling: How The World Is Splitting In Two
+                    </h2>
+                    <p class="article-excerpt text-white/80 text-sm md:text-lg classic-body leading-relaxed max-w-2xl mb-6 line-clamp-3 md:line-clamp-none">
                         The era of one global economy is over. From the depths of the internet to the heights of orbital dominance, parallel systems are hardening into a new iron curtain.
                     </p>
                     <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 md:gap-8">
@@ -205,68 +228,64 @@
                     <h3 class="label-font font-black text-[10px] uppercase tracking-[0.2em] text-brand-navy border-b border-brand-navy/10 pb-3 mb-6">World Briefing</h3>
                     
                     <div class="space-y-6 flex-grow">
-                        <article class="news-stack-item group">
-                            <a href="#" class="serif-headline text-lg md:text-xl font-bold leading-tight group-hover:text-brand-gold block mb-1">Tokyo Nikkei Surge: Why Investors are Fleeing to the East</a>
-                            <p class="text-xs classic-body text-gray-500 line-clamp-2">Inside the numbers that suggest a permanent shift in market liquidity.</p>
+                        <article id="article-tokyo" class="searchable group cursor-pointer" onclick="showToast('Loading Market Intelligence...')">
+                            <h4 class="article-title serif-headline text-lg md:text-xl font-bold leading-tight group-hover:text-brand-gold block mb-1">Tokyo Nikkei Surge: Why Investors are Fleeing to the East</h4>
+                            <p class="article-excerpt text-xs classic-body text-gray-500 line-clamp-2">Inside the numbers that suggest a permanent shift in market liquidity.</p>
                         </article>
 
-                        <article class="news-stack-item group flex gap-4">
+                        <article id="article-spacex" class="searchable group flex gap-4 cursor-pointer" onclick="showToast('Accessing High-Res Imagery...')">
                             <div class="flex-1">
-                                <a href="#" class="serif-headline text-lg font-bold leading-tight group-hover:text-brand-gold block mb-1">SpaceX 'Starbase One' Lunar Outpost Visuals</a>
+                                <h4 class="article-title serif-headline text-lg font-bold leading-tight group-hover:text-brand-gold block mb-1">SpaceX 'Starbase One' Lunar Outpost Visuals</h4>
+                                <p class="article-excerpt hidden">Visual intelligence of the first lunar base under construction.</p>
                                 <span class="text-[9px] label-font font-bold text-gray-400 uppercase">34m ago</span>
                             </div>
                             <div class="w-20 h-20 shrink-0 overflow-hidden rounded bg-gray-100">
                                 <img src="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?q=80&w=300" class="w-full h-full object-cover">
                             </div>
                         </article>
-
-                        <article class="news-stack-item group">
-                            <a href="#" class="serif-headline text-lg font-bold leading-tight group-hover:text-brand-gold block mb-1">Arctic Sovereignty: New North Pole Battle</a>
-                            <p class="text-xs classic-body text-gray-500">Five nations move fleet assets into contested waters.</p>
-                        </article>
                     </div>
 
-                    <a href="#" class="mt-6 p-3 bg-gray-50 rounded text-center label-font text-[10px] font-black text-brand-navy hover:bg-brand-navy hover:text-white transition-all uppercase">
+                    <button class="nav-link mt-6 p-3 bg-gray-50 rounded text-center label-font text-[10px] font-black text-brand-navy hover:bg-brand-navy hover:text-white transition-all uppercase">
                         View All Intelligence <i class="fas fa-arrow-right ml-2"></i>
-                    </a>
+                    </button>
                 </div>
             </div>
         </section>
 
         <!-- 4. NEWS WALL -->
         <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 border-t premium-border pt-10 mb-16">
-            <div class="space-y-8">
+            <div id="article-brussels" class="searchable space-y-8">
                 <h3 class="label-font text-brand-gold font-bold text-xs uppercase tracking-widest border-b-2 border-brand-gold pb-2 inline-block mb-6">World Affairs</h3>
-                <article class="group">
+                <article class="group cursor-pointer" onclick="showToast('Accessing World Affairs...')">
                     <div class="aspect-video bg-gray-200 mb-4 overflow-hidden rounded-sm">
                         <img src="https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?q=80&w=800" class="w-full h-full object-cover group-hover:scale-105 transition-all">
                     </div>
-                    <a href="#" class="serif-headline text-xl font-bold group-hover:text-brand-gold block mb-2 leading-tight">Brussels Mandates Carbon Passport for Global Travel</a>
-                    <p class="text-xs classic-body text-gray-600 leading-relaxed line-clamp-3">The new directive effectively places a cap on international movement for non-essential business travel.</p>
+                    <h4 class="article-title serif-headline text-xl font-bold group-hover:text-brand-gold block mb-2 leading-tight">Brussels Mandates Carbon Passport for Global Travel</h4>
+                    <p class="article-excerpt text-xs classic-body text-gray-600 leading-relaxed line-clamp-3">The new directive effectively places a cap on international movement for non-essential business travel.</p>
                 </article>
             </div>
 
-            <div class="space-y-8">
+            <div id="article-brics" class="searchable space-y-8">
                 <h3 class="label-font text-brand-navy font-bold text-xs uppercase tracking-widest border-b-2 border-brand-navy pb-2 inline-block mb-6">Markets</h3>
-                <article class="group">
+                <article class="group cursor-pointer" onclick="showToast('Accessing Market Data...')">
                     <div class="aspect-video bg-gray-200 mb-4 overflow-hidden rounded-sm relative">
                         <img src="https://images.unsplash.com/photo-1611974714024-462cd58a3644?q=80&w=800" class="w-full h-full object-cover group-hover:scale-105 transition-all">
                         <div class="absolute top-2 left-2 bg-black text-white px-2 py-0.5 text-[8px] font-bold uppercase tracking-tighter">Analysis</div>
                     </div>
-                    <a href="#" class="serif-headline text-xl font-bold group-hover:text-brand-gold block mb-2 leading-tight">The Death of the Dollar? Why BRICS+ is Winning</a>
-                    <p class="text-xs classic-body text-gray-600 leading-relaxed line-clamp-3">How a digital-first commodity-backed ledger is challenging 80 years of USD global dominance.</p>
+                    <h4 class="article-title serif-headline text-xl font-bold group-hover:text-brand-gold block mb-2 leading-tight">The Death of the Dollar? Why BRICS+ is Winning</h4>
+                    <p class="article-excerpt text-xs classic-body text-gray-600 leading-relaxed line-clamp-3">How a digital-first commodity-backed ledger is challenging USD global dominance.</p>
                 </article>
             </div>
 
-            <div class="space-y-8">
+            <div id="article-fusion" class="searchable space-y-8">
                 <h3 class="label-font text-blue-900 font-bold text-xs uppercase tracking-widest border-b-2 border-blue-900 pb-2 inline-block mb-6">Discovery</h3>
-                <article class="group">
+                <article class="group cursor-pointer" onclick="showToast('Accessing Science Lab...')">
                     <div class="aspect-video bg-gray-200 mb-4 overflow-hidden rounded-sm relative">
                         <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=800" class="w-full h-full object-cover group-hover:scale-105 transition-all">
                         <div class="absolute top-2 left-2 bg-blue-900 text-white px-2 py-0.5 text-[8px] font-bold uppercase tracking-tighter">Science</div>
                     </div>
-                    <a href="#" class="serif-headline text-xl font-bold group-hover:text-brand-gold block mb-2 leading-tight">First Stable Fusion Reaction Achieved in Seoul</a>
-                    <p class="text-xs classic-body text-gray-600 leading-relaxed line-clamp-3">The KSTAR reactor maintained stability for 5 minutes, marking the beginning of the post-scarcity era.</p>
+                    <h4 class="article-title serif-headline text-xl font-bold group-hover:text-brand-gold block mb-2 leading-tight">First Stable Fusion Reaction Achieved in Seoul</h4>
+                    <p class="article-excerpt text-xs classic-body text-gray-600 leading-relaxed line-clamp-3">The KSTAR reactor maintained stability for 5 minutes, marking the start of a new era.</p>
                 </article>
             </div>
         </section>
@@ -276,32 +295,35 @@
             <div class="container mx-auto">
                 <h2 class="serif-headline text-2xl md:text-3xl font-bold italic mb-8">Circular Eagle News <span class="text-brand-gold">Originals</span></h2>
                 <div class="flex overflow-x-auto pb-6 gap-6 no-scrollbar snap-x touch-pan-x md:grid md:grid-cols-3 md:overflow-visible">
-                    <div class="min-w-[80vw] md:min-w-0 snap-center group cursor-pointer">
+                    <div id="video-lithium" class="searchable video-card min-w-[80vw] md:min-w-0 snap-center group cursor-pointer" onclick="showToast('Initializing Video Player...')">
                         <div class="relative aspect-video overflow-hidden rounded-lg mb-4">
                             <img src="https://images.unsplash.com/photo-1444676632488-26a136c45b9b?q=80&w=800" class="w-full h-full object-cover brightness-75 group-hover:brightness-100 transition-all">
                             <div class="absolute inset-0 flex items-center justify-center">
-                                <div class="w-14 h-14 bg-brand-gold/90 rounded-full flex items-center justify-center shadow-xl"><i class="fas fa-play text-white ml-1"></i></div>
+                                <div class="w-14 h-14 bg-brand-gold/90 rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition-transform"><i class="fas fa-play text-white ml-1"></i></div>
                             </div>
                         </div>
-                        <h4 class="font-bold text-lg leading-tight group-hover:text-brand-gold">The Lithium War: Mining the Andes</h4>
+                        <h4 class="article-title font-bold text-lg leading-tight group-hover:text-brand-gold">The Lithium War: Mining the Andes</h4>
+                        <p class="article-excerpt hidden">Original documentary on the South American mining boom.</p>
                     </div>
-                    <div class="min-w-[80vw] md:min-w-0 snap-center group cursor-pointer">
+                    <div id="video-silkroad" class="searchable video-card min-w-[80vw] md:min-w-0 snap-center group cursor-pointer" onclick="showToast('Initializing Video Player...')">
                         <div class="relative aspect-video overflow-hidden rounded-lg mb-4">
                             <img src="https://images.unsplash.com/photo-1493612276216-ee3925520721?q=80&w=800" class="w-full h-full object-cover brightness-75 group-hover:brightness-100 transition-all">
                             <div class="absolute inset-0 flex items-center justify-center">
-                                <div class="w-14 h-14 bg-brand-gold/90 rounded-full flex items-center justify-center shadow-xl"><i class="fas fa-play text-white ml-1"></i></div>
+                                <div class="w-14 h-14 bg-brand-gold/90 rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition-transform"><i class="fas fa-play text-white ml-1"></i></div>
                             </div>
                         </div>
-                        <h4 class="font-bold text-lg leading-tight group-hover:text-brand-gold">Cyber-Silk Road: Digital Imperialism</h4>
+                        <h4 class="article-title font-bold text-lg leading-tight group-hover:text-brand-gold">Cyber-Silk Road: Digital Imperialism</h4>
+                        <p class="article-excerpt hidden">Investigating the digital infrastructure of the 21st century.</p>
                     </div>
-                    <div class="min-w-[80vw] md:min-w-0 snap-center group cursor-pointer">
+                    <div id="video-tundra" class="searchable video-card min-w-[80vw] md:min-w-0 snap-center group cursor-pointer" onclick="showToast('Initializing Video Player...')">
                         <div class="relative aspect-video overflow-hidden rounded-lg mb-4">
                             <img src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=80&w=800" class="w-full h-full object-cover brightness-75 group-hover:brightness-100 transition-all">
                             <div class="absolute inset-0 flex items-center justify-center">
-                                <div class="w-14 h-14 bg-brand-gold/90 rounded-full flex items-center justify-center shadow-xl"><i class="fas fa-play text-white ml-1"></i></div>
+                                <div class="w-14 h-14 bg-brand-gold/90 rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition-transform"><i class="fas fa-play text-white ml-1"></i></div>
                             </div>
                         </div>
-                        <h4 class="font-bold text-lg leading-tight group-hover:text-brand-gold">Last Breath of the Tundra</h4>
+                        <h4 class="article-title font-bold text-lg leading-tight group-hover:text-brand-gold">Last Breath of the Tundra</h4>
+                        <p class="article-excerpt hidden">Ecological report from the Siberian permafrost.</p>
                     </div>
                 </div>
             </div>
@@ -312,78 +334,79 @@
     <!-- 6. FOOTER -->
     <footer class="bg-[#051024] text-white pt-20 pb-12 border-t border-brand-gold/20">
         <div class="container mx-auto px-4">
-            <!-- Main Grid: Everything Left Aligned -->
             <div class="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16 text-left">
-                
-                <!-- Branding Col: Wider spread for the full name -->
                 <div class="md:col-span-4">
                     <h2 class="logo-font text-3xl md:text-4xl text-white mb-6">CIRCULAR EAGLE NEWS</h2>
                     <p class="text-gray-400 classic-body leading-relaxed text-sm max-w-sm mb-8">
-                        The definitive source for global intelligence and breaking news. Analyzing the shifts of power in a multi-polar era with uncompromising depth.
+                        The definitive source for global intelligence. Reborn for a multi-polar world.
                     </p>
                     <div class="flex gap-6 text-xl text-brand-gold">
-                        <a href="#" class="hover:text-white transition-colors"><i class="fab fa-x-twitter"></i></a>
-                        <a href="#" class="hover:text-white transition-colors"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="hover:text-white transition-colors"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" class="hover:text-white transition-colors"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="social-link hover:text-white transition-colors"><i class="fab fa-x-twitter"></i></a>
+                        <a href="#" class="social-link hover:text-white transition-colors"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link hover:text-white transition-colors"><i class="fab fa-linkedin"></i></a>
                     </div>
                 </div>
                 
-                <!-- Intelligence Column -->
                 <div class="md:col-span-2">
-                    <h4 class="label-font text-brand-gold text-xs font-bold uppercase tracking-widest mb-6 border-b border-brand-gold/20 pb-2 inline-block md:block">Intelligence</h4>
+                    <h4 class="label-font text-brand-gold text-xs font-bold uppercase tracking-widest mb-6 border-b border-brand-gold/20 pb-2">Intelligence</h4>
                     <ul class="space-y-4 text-[11px] font-medium text-gray-400 label-font uppercase tracking-wider">
-                        <li><a href="#" class="hover:text-white transition-colors">World Affairs</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Global Markets</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Cyber Security</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Space Frontier</a></li>
+                        <li><a href="#" class="nav-link hover:text-white transition-colors">World Affairs</a></li>
+                        <li><a href="#" class="nav-link hover:text-white transition-colors">Global Markets</a></li>
+                        <li><a href="#" class="nav-link hover:text-white transition-colors">Cyber Security</a></li>
                     </ul>
                 </div>
 
-                <!-- Network Column -->
                 <div class="md:col-span-2">
-                    <h4 class="label-font text-brand-gold text-xs font-bold uppercase tracking-widest mb-6 border-b border-brand-gold/20 pb-2 inline-block md:block">Network</h4>
+                    <h4 class="label-font text-brand-gold text-xs font-bold uppercase tracking-widest mb-6 border-b border-brand-gold/20 pb-2">Network</h4>
                     <ul class="space-y-4 text-[11px] font-medium text-gray-400 label-font uppercase tracking-wider">
-                        <li><a href="#" class="hover:text-white transition-colors">About Us</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Bureaus</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Ethics Board</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Careers</a></li>
+                        <li><a href="#" class="nav-link hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="#" class="nav-link hover:text-white transition-colors">Careers</a></li>
+                        <li><a href="#" class="nav-link hover:text-white transition-colors">Tip Line</a></li>
                     </ul>
                 </div>
 
-                <!-- Subscription Column -->
                 <div class="md:col-span-4">
-                    <h4 class="label-font text-brand-gold text-xs font-bold uppercase tracking-widest mb-6 border-b border-brand-gold/20 pb-2 inline-block md:block">Subscription</h4>
-                    <p class="text-gray-400 text-xs mb-6 max-w-xs">Receive the Daily Briefing directly to your inbox. Curated by our lead editors.</p>
-                    <div class="flex max-w-xs md:max-w-none">
-                        <input type="email" placeholder="Email Address" class="bg-white/5 border border-white/10 px-4 py-2 text-xs text-white focus:outline-none focus:border-brand-gold w-full max-w-[200px]">
-                        <button class="bg-brand-gold text-white px-4 py-2 text-[10px] font-bold label-font uppercase tracking-widest hover:bg-white hover:text-brand-navy transition-all shrink-0">Sign Up</button>
-                    </div>
+                    <h4 class="label-font text-brand-gold text-xs font-bold uppercase tracking-widest mb-6 border-b border-brand-gold/20 pb-2">Subscription</h4>
+                    <p class="text-gray-400 text-xs mb-6 max-w-xs">Daily Briefing delivered to your inbox.</p>
+                    <form id="footer-sub-form" class="flex max-w-xs md:max-w-none">
+                        <input type="email" required placeholder="Email Address" class="bg-white/5 border border-white/10 px-4 py-2 text-xs text-white focus:outline-none focus:border-brand-gold w-full">
+                        <button type="submit" class="bg-brand-gold text-white px-4 py-2 text-[10px] font-bold label-font uppercase tracking-widest hover:bg-white hover:text-brand-navy transition-all shrink-0">Sign Up</button>
+                    </form>
                 </div>
             </div>
 
-            <!-- Bottom Legal Bar -->
             <div class="pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between text-[10px] text-gray-500 label-font font-bold uppercase tracking-widest gap-8 text-left">
-                <div class="space-y-2">
-                    <p>&copy; 2025 CIRCULAR EAGLE NEWS MEDIA GROUP.</p>
-                    <p class="text-[9px] text-gray-600 normal-case italic font-normal">Headquartered in London with bureaus in Singapore, New York, and Brussels.</p>
-                </div>
+                <p>&copy; 2025 CIRCULAR EAGLE NEWS MEDIA GROUP.</p>
                 <div class="flex flex-wrap gap-x-8 gap-y-4 items-center">
-                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
-                    <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
-                    <a href="#" class="hover:text-white transition-colors">Tip Line</a>
-                    <a href="#" class="hover:text-white transition-colors">Contact</a>
+                    <a href="#" class="nav-link hover:text-white">Privacy Policy</a>
+                    <a href="#" class="nav-link hover:text-white">Terms</a>
+                    <a href="#" class="nav-link hover:text-white">Contact</a>
                 </div>
             </div>
         </div>
     </footer>
 
     <script>
+        // DOM Elements
         const burgerBtn = document.getElementById('burger-btn');
         const closeBtn = document.getElementById('close-menu');
         const mobileMenu = document.getElementById('mobile-menu');
         const overlay = document.getElementById('mobile-overlay');
+        const searchOverlay = document.getElementById('search-overlay');
+        const searchTrigger = document.getElementById('search-trigger');
+        const closeSearch = document.getElementById('close-search');
+        const searchInput = document.getElementById('search-input');
+        const searchResults = document.getElementById('search-results-container');
+        const toast = document.getElementById('toast');
 
+        // Notification Function
+        function showToast(message) {
+            toast.textContent = message;
+            toast.classList.add('visible');
+            setTimeout(() => toast.classList.remove('visible'), 3000);
+        }
+
+        // Menu Mechanics
         function toggleMenu() {
             const isActive = mobileMenu.classList.toggle('active');
             if (isActive) {
@@ -392,15 +415,123 @@
                 document.body.style.overflow = 'hidden';
             } else {
                 overlay.classList.remove('opacity-100');
-                setTimeout(() => overlay.classList.add('hidden'), 300);
-                document.body.style.overflow = '';
+                setTimeout(() => {
+                    overlay.classList.add('hidden');
+                    document.body.style.overflow = '';
+                }, 300);
             }
         }
 
+        // Search Interface Logic
+        searchTrigger.addEventListener('click', () => {
+            searchOverlay.classList.add('active');
+            searchInput.focus();
+            document.body.style.overflow = 'hidden';
+        });
+
+        closeSearch.addEventListener('click', () => {
+            searchOverlay.classList.remove('active');
+            if (!mobileMenu.classList.contains('active')) {
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Search Implementation
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            searchResults.innerHTML = '';
+
+            if (query === "") {
+                searchResults.innerHTML = '<p class="label-font text-gray-400 uppercase text-center py-20 tracking-widest">Start typing to scan global database</p>';
+                return;
+            }
+
+            // Get all items on page marked as searchable
+            const searchables = document.querySelectorAll('.searchable');
+            let foundCount = 0;
+
+            searchables.forEach(item => {
+                const title = item.querySelector('.article-title')?.innerText.toLowerCase() || "";
+                const excerpt = item.querySelector('.article-excerpt')?.innerText.toLowerCase() || "";
+                
+                if (title.includes(query) || excerpt.includes(query)) {
+                    foundCount++;
+                    const resultCard = document.createElement('div');
+                    resultCard.className = "group border border-gray-100 p-6 rounded-md hover:border-brand-gold hover:shadow-lg transition-all cursor-pointer bg-white";
+                    
+                    const itemTitle = item.querySelector('.article-title')?.innerText || "Intel Fragment";
+                    const itemExcerpt = item.querySelector('.article-excerpt')?.innerText.substring(0, 100) + "..." || "";
+                    
+                    resultCard.innerHTML = `
+                        <div class="flex flex-col">
+                            <h3 class="serif-headline text-xl font-bold group-hover:text-brand-gold transition-colors">${itemTitle}</h3>
+                            <p class="text-sm text-gray-500 mt-2">${itemExcerpt}</p>
+                            <span class="text-[9px] label-font font-bold text-brand-navy mt-4 uppercase tracking-widest">View Intelligence</span>
+                        </div>
+                    `;
+
+                    resultCard.addEventListener('click', () => {
+                        searchOverlay.classList.remove('active');
+                        document.body.style.overflow = '';
+                        item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        // Brief highlight effect
+                        item.classList.add('ring-4', 'ring-brand-gold', 'ring-opacity-20');
+                        setTimeout(() => item.classList.remove('ring-4'), 2000);
+                    });
+
+                    searchResults.appendChild(resultCard);
+                }
+            });
+
+            if (foundCount === 0) {
+                searchResults.innerHTML = `
+                    <div class="text-center py-20">
+                        <i class="fas fa-search-minus text-4xl text-gray-100 mb-4"></i>
+                        <p class="label-font text-gray-400 uppercase tracking-widest">No matching intel found for "${query}"</p>
+                    </div>
+                `;
+            }
+        });
+
+        // Event Listeners for Nav
         burgerBtn.addEventListener('click', toggleMenu);
         closeBtn.addEventListener('click', toggleMenu);
         overlay.addEventListener('click', toggleMenu);
+
+        // Global Link Handler
+        document.querySelectorAll('.nav-link, .social-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const text = e.currentTarget.textContent.trim() || "Social Link";
+                showToast(`Opening ${text}...`);
+                if (mobileMenu.classList.contains('active')) toggleMenu();
+            });
+        });
+
+        // Mobile Subscription Form Logic (On-Page)
+        document.getElementById('mobile-subscribe-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = e.target.querySelector('input').value;
+            // Immediate feedback without redirect
+            showToast(`Encrypted Access Granted. Intelligence briefing sent to ${email}`);
+            e.target.reset();
+            // Optional: close menu after success
+            setTimeout(toggleMenu, 1500);
+        });
+
+        // Footer Form Submission
+        document.getElementById('footer-sub-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = e.target.querySelector('input').value;
+            showToast(`Success! Newsletter sent to ${email}`);
+            e.target.reset();
+        });
+
+        // Marquee Interaction (Pause on Hover)
+        const marquee = document.querySelector('.marquee-content');
+        marquee.addEventListener('mouseenter', () => marquee.style.animationPlayState = 'paused');
+        marquee.addEventListener('mouseleave', () => marquee.style.animationPlayState = 'running');
+
     </script>
 </body>
-</html>
-
+                    </html>
